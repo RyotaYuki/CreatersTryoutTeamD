@@ -1,4 +1,4 @@
-﻿# DragonEscape
+# DragonEscape
 Group creation repository for games , This game genre is
 
 ## 仕様
@@ -60,10 +60,6 @@ Unity 2018.4.10f1
 * ファイルと.metaは一緒にcommitする
 * ディレクトリの場合は`.gitkeep`も一緒にcommitする
     - `.gitkeep`は空ディレクトリも管理するため
-* commitはテキストとバイナリで分ける
-    - テキスト: .cs, .txt, .xml, .facedなどのヒューマンリーダブルなファイル
-    - バイナリ: .png, .prefab, .unity, .unity3dなどの人間の目でレビューが困難なファイル
-    - 理由: レビュワーがレビューをし易いため
 * 不要ファイルは(.bakなど)コミットしない
 
 命名規則
@@ -220,15 +216,6 @@ class Sample
 インデント
 -----------------
 * タブを使用する(スペースはNG)
-
-コールバック
------------------
-* `delegate`を使う。`Actionは`使わない。
-
-1行の文字数
------------------
-* 努力目標：80文字
-* 最大：100文字
 
 改行ルール
 -----------------
