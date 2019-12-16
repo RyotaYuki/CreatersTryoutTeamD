@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Mm]emoryCaptures/
+/DragonEscape/[Ll]ibrary/
+/DragonEscape/[Tt]emp/
+/DragonEscape/[Oo]bj/
+/DragonEscape/[Bb]uild/
+/DragonEscape/[Bb]uilds/
+/DragonEscape/[Ll]ogs/
+/DragonEscape/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
