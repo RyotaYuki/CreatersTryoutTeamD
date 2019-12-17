@@ -19,7 +19,7 @@ public class GiveMoneyman : MonoBehaviour
         {
             Vector3 distance = _targetObj.transform.position - transform.position;
             Vector3 vec = distance.normalized;
-            transform.position += vec;
+            transform.position += vec * 10 * Time.deltaTime;
         }
 
 

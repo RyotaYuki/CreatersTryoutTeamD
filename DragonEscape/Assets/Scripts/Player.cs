@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     //ステータス
-    public int hp;
+    public int hp = 100;
+    public int maxhp = 100;
+    [SerializeField]
     private float _speed = 1.0f;
     public float minspeed = 1.0f;
     public float maxspeed = 3.0f;
@@ -27,6 +30,8 @@ public class Player : MonoBehaviour
     private Vector3 movevector;
     public float moveForceMultiplier; // 移動速度の入力に対する追従度
 
+    //HPバー用
+    public Image hpbar;
 
     // Start is called before the first frame update
     void Start()
@@ -44,26 +49,29 @@ public class Player : MonoBehaviour
         {
             if(maxspeed > _speed)
             {
-                _speed += 1.0f * Time.deltaTime;
+                _speed += 10.0f * Time.deltaTime;
             }
         }
 
         else if(minspeed < _speed)
         {
-            _speed -= 1.0f * Time.deltaTime;
+            _speed -= 30.0f * Time.deltaTime;
         }
 
         if (Input.GetKeyDown("f"))
         {
             Instantiate(moneyObj, transform.position,Quaternion.identity);
         }
+
+        //UI変更処理
+        hpbar.fillAmount = (float)hp/(float)maxhp;
     }
 
     void Move()
     {
 
-        _moveX = Input.GetAxis("Horizontal") * 7 *  _speed * Time.deltaTime;
-        _moveY = Input.GetAxis("Vertical") * 7 * _speed * Time.deltaTime;
+        _moveX = Input.GetAxis("Horizontal") * 5 *  _speed * Time.deltaTime;
+        _moveY = Input.GetAxis("Vertical") * 5 * _speed * Time.deltaTime;
         _force = transform.up * _moveY * 10;
 
         _rb.AddForce(_force);
@@ -82,6 +90,23 @@ public class Player : MonoBehaviour
 
         transform.Rotate(0, 0, -Z_Rotation);
         _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x,0,movevector.z) - _rb.velocity));
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x, 0, movevector.z) - _rb.velocity));
+            transform.Rotate(0, 0, -Z_Rotation);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Wall")
+        {
+            if (_speed >= 10)
+            {
+                hp -= 1;
+                _speed = 9;
+            }
+        }
     }
 
 
