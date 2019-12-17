@@ -69,6 +69,15 @@ public class Player : MonoBehaviour
         _rb.AddForce(_force);
         movevector = _force;
 
+        if (_moveX > 0)
+        {
+            _camera.GetComponent<CameraController>().LeftMoveCamera();
+        }
+        else if(_moveX < 0)
+        {
+            _camera.GetComponent<CameraController>().RightMoveCamera();
+        }
+
             //transform.position += transform.up * speed * Time.deltaTime;
             //transform.position += transform.right * speed * Time.deltaTime;
 
@@ -77,7 +86,7 @@ public class Player : MonoBehaviour
             float Z_Rotation = Input.GetAxis("Horizontal");
         //transform.Rotate(0, X_Rotation, 0);
         //transform.Rotate(-Y_Rotation, 0, 0);
-        _camera.transform.Rotate(0, 0, -Z_Rotation);
+        transform.Rotate(0, 0, -Z_Rotation);
         _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x,0,movevector.z) - _rb.velocity));
     }
 
