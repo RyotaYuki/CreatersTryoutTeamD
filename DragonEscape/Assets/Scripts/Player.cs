@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private float _speed = 1.0f;
     public float minspeed = 1.0f;
     public float maxspeed = 3.0f;
+    private int _money = 10000000;
 
     public GameObject moneyObj;
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
 
     //HPバー用
     public Image hpbar;
+    public Text moneyText;
 
     // Start is called before the first frame update
     void Start()
@@ -61,10 +63,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown("f"))
         {
             Instantiate(moneyObj, transform.position,Quaternion.identity);
+            _money -= 10000;
         }
 
         //UI変更処理
         hpbar.fillAmount = (float)hp/(float)maxhp;
+        moneyText.text = _money + "＄";
+
     }
 
     void Move()
@@ -72,6 +77,7 @@ public class Player : MonoBehaviour
 
         _moveX = Input.GetAxis("Horizontal") * 5 *  _speed * Time.deltaTime;
         _moveY = Input.GetAxis("Vertical") * 5 * _speed * Time.deltaTime;
+        //_moveX += Input.GetAxis("QEHor") * 5 * _speed * Time.deltaTime;
         _force = transform.up * _moveY * 10;
 
         _rb.AddForce(_force);
@@ -89,6 +95,12 @@ public class Player : MonoBehaviour
         float Z_Rotation = Input.GetAxis("Horizontal");
 
         transform.Rotate(0, 0, -Z_Rotation);
+
+        Z_Rotation = Input.GetAxis("QEHor");
+
+        transform.Rotate(0, 0, -Z_Rotation);
+
+
         _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x,0,movevector.z) - _rb.velocity));
         if (Input.GetKey(KeyCode.LeftShift))
         {
