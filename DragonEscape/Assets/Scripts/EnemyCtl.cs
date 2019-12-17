@@ -24,8 +24,8 @@ public class EnemyCtl : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        //navmesh = GetComponent<NavMeshAgent>();
-        //navmesh.speed = velocity;
+        navmesh = GetComponent<NavMeshAgent>();
+        navmesh.speed = velocity;
     }
 
     //更新処理
