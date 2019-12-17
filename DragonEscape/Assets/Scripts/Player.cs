@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public float minspeed = 1.0f;
     public float maxspeed = 3.0f;
 
+    public GameObject moneyObj;
+
     //移動受付用
     private float _moveX;
     private float _moveY;
@@ -49,6 +51,11 @@ public class Player : MonoBehaviour
         else if(minspeed < _speed)
         {
             _speed -= 1.0f * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown("f"))
+        {
+            Instantiate(moneyObj, transform.position,Quaternion.identity);
         }
     }
 
