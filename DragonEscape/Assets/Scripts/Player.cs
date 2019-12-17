@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _force = transform.position;
-        _rb2d = GetComponent<Rigidbody2D>();
+        //_rb2d = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
         _moveY = Input.GetAxis("Vertical") * 10 * _speed * Time.deltaTime;
         _force = transform.up * _moveY * 10;
 
-        _rb2d.AddForce(_force);
+        //_rb2d.AddForce(_force);
         movevector = _force;
 
             //transform.position += transform.up * speed * Time.deltaTime;
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
         //transform.Rotate(0, X_Rotation, 0);
         //transform.Rotate(-Y_Rotation, 0, 0);
         _camera.transform.Rotate(0, 0, -Z_Rotation);
-        _rb2d.AddForce(moveForceMultiplier * (new Vector2(movevector.x,movevector.y) - _rb2d.velocity));
+        //_rb2d.AddForce(moveForceMultiplier * (new Vector2(movevector.x,movevector.y) - _rb2d.velocity));
     }
 
 
