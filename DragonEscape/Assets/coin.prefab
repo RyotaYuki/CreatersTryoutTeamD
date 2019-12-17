@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4674,7 +4674,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -4709,6 +4709,7 @@ GameObject:
   - component: {fileID: 2884891306809327925}
   - component: {fileID: 2884891306809327923}
   - component: {fileID: 2884891306809327922}
+  - component: {fileID: 7333621162141828636}
   m_Layer: 0
   m_Name: coin
   m_TagString: Untagged
@@ -4768,7 +4769,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3b033df4536ce7e499d145a9c1eb97e0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 908aa20c59dd42a4da31ac285baeebb8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4798,6 +4799,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &7333621162141828636
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884891306809327924}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 50, y: 34.69877, z: 50}
+  m_Center: {x: 0, y: -7.650616, z: 0}
 --- !u!1 &2884891307413626956
 GameObject:
   m_ObjectHideFlags: 0
