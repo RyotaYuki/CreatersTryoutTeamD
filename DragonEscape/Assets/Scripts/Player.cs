@@ -62,8 +62,8 @@ public class Player : MonoBehaviour
     void Move()
     {
 
-        _moveX = Input.GetAxis("Horizontal") * 10 *  _speed * Time.deltaTime;
-        _moveY = Input.GetAxis("Vertical") * 10 * _speed * Time.deltaTime;
+        _moveX = Input.GetAxis("Horizontal") * 7 *  _speed * Time.deltaTime;
+        _moveY = Input.GetAxis("Vertical") * 7 * _speed * Time.deltaTime;
         _force = transform.up * _moveY * 10;
 
         _rb.AddForce(_force);
@@ -78,14 +78,8 @@ public class Player : MonoBehaviour
             _camera.GetComponent<CameraController>().RightMoveCamera();
         }
 
-            //transform.position += transform.up * speed * Time.deltaTime;
-            //transform.position += transform.right * speed * Time.deltaTime;
+        float Z_Rotation = Input.GetAxis("Horizontal");
 
-            //float X_Rotation = Input.GetAxis("Mouse X");
-            //float Y_Rotation = Input.GetAxis("Mouse Y");
-            float Z_Rotation = Input.GetAxis("Horizontal");
-        //transform.Rotate(0, X_Rotation, 0);
-        //transform.Rotate(-Y_Rotation, 0, 0);
         transform.Rotate(0, 0, -Z_Rotation);
         _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x,0,movevector.z) - _rb.velocity));
     }
