@@ -23,60 +23,60 @@ public class EnemyCtl : MonoBehaviour
     [SerializeField]
     public int HP = 0;
     [SerializeField]
-    private float _hightVelocity = 0;
+    private float _hightVelocity = 0;        // プレイヤー追従速度
     [SerializeField]
     private float _velocity = 0;             // 敵の移動速度
     [SerializeField]
     private float _lowVelocity = 0;          // 敵の移動低下時の速度
+
     private GameObject _player = null;       // プレイヤーオブジェクト
     private NavMeshAgent _navmesh;
-    private bool followFlag = false;
     private bool collisionFlag = false;
-    private Rigidbody _rb;
-    [SerializeField]
-    private GameObject[] points = null;             // 巡回時の目標地点
+
     private List<GameObject> pointList = new List<GameObject>();
     private Patrol patrol = Patrol.FIRST;
-    [SerializeField]
     private GameObject checkPL = null;
     private PLEnterCheck _pLEnterCheck;
     private bool smokeFlag = false;
     //private float smokeTime = 5;
     //private float deltime = 0;
+    private bool onceFlag = true;
 
     // 初期化
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        _pLEnterCheck = checkPL.GetComponent<PLEnterCheck>();
         _navmesh = GetComponent<NavMeshAgent>();
         _navmesh.speed = _velocity;
-        _rb = this.transform.GetComponent<Rigidbody>();
-        for(int j= 0; j < points.Length; j++)
-        {
-            pointList.Add(points[j]);
-        }
     }
 
     // 更新処理
     private void Update()
     {
-        if (_pLEnterCheck.GetEnterFlag())
+        if (_pLEnterCheck == null)
         {
-            followFlag = true;
+            return;
         }
         else
         {
-            followFlag = false;
+            if (onceFlag)
+            {
+                _pLEnterCheck.PointSort();
+                for (int j = 0; j < _pLEnterCheck.GetPointList().Count; j++)
+                {
+                    pointList.Add(_pLEnterCheck.GetPointList()[j]);
+                }
+                onceFlag = false;
+            }
         }
 
-        if (followFlag)
+        if (_pLEnterCheck.GetEnterFlag())
         {
             if (!smokeFlag)
             {
+                //プレイヤー追従設定
                 _navmesh.acceleration = 5;
                 _navmesh.speed = _hightVelocity;
-                // 位置の更新
                 _navmesh.destination = _player.transform.position;
             }
             else
@@ -93,22 +93,7 @@ public class EnemyCtl : MonoBehaviour
         {
             _navmesh.acceleration = 8;
             _navmesh.speed = _velocity;
-            if (patrol == Patrol.FIRST)
-            {
-                _navmesh.destination = pointList[(int)Patrol.FIRST].transform.position;
-            }
-            if (patrol == Patrol.SECOND)
-            {
-                _navmesh.destination = pointList[(int)Patrol.SECOND].transform.position;
-            }
-            if (patrol == Patrol.THIRD)
-            {
-                _navmesh.destination = pointList[(int)Patrol.THIRD].transform.position;
-            }
-            if (patrol == Patrol.END)
-            {
-                _navmesh.destination = pointList[(int)Patrol.END].transform.position;
-            }
+            _navmesh.destination = pointList[(int)patrol].transform.position;
         }
     }
 
@@ -144,7 +129,7 @@ public class EnemyCtl : MonoBehaviour
             }
             else if(patrol == Patrol.THIRD)
             {
-                if (points.Length > 3)
+                if (pointList.Count > 3)
                 {
                     patrol = Patrol.END;
                 }
@@ -160,12 +145,23 @@ public class EnemyCtl : MonoBehaviour
             collisionFlag = false;
         }
     }
+
     //障害物から逃れたら速度を元に戻す
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Money")
         {
             _navmesh.speed = _velocity;
+        }
+    }
+
+    //巡回フィールド範囲BOXを取得
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Wall")
+        {
+            checkPL = other.transform.gameObject;
+            _pLEnterCheck = checkPL.GetComponent<PLEnterCheck>();
         }
     }
 
@@ -184,6 +180,6 @@ public class EnemyCtl : MonoBehaviour
     //プレイヤーを追いかけるかどうか判断するフラグの取得関数
     public bool GetFollowFlag()
     {
-        return followFlag;
+        return _pLEnterCheck.GetEnterFlag();
     }
 }
