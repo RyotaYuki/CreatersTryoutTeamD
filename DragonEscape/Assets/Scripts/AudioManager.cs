@@ -18,7 +18,6 @@ public class AudioManager : MonoSingleton<AudioManager>
     /// </summary>
     public AudioMixerGroup MixerBgmGroup;
     public AudioMixerGroup MixerSeGroup;
-    public AudioMixerGroup MixerVoiceGroup;
 
     /// <summary>
     /// 管理しているオーディオ情報
@@ -39,14 +38,6 @@ public class AudioManager : MonoSingleton<AudioManager>
     public List<AudioPlayer> AudioSePlayers
     {
         get { return AudioPlayers.FindAll(ap => ap.Source.outputAudioMixerGroup == MixerSeGroup); }
-    }
-
-    /// <summary>
-    /// 管理しているVoice情報を取得します。
-    /// </summary>
-    public List<AudioPlayer> AudioVoicePlayers
-    {
-        get { return AudioPlayers.FindAll(ap => ap.Source.outputAudioMixerGroup == MixerVoiceGroup); }
     }
 
     /// <summary>
