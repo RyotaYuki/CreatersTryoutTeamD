@@ -7,6 +7,12 @@ public class Player : MonoBehaviour
 {
     //ゲームマネージャー
     private GameManager _gm;
+    //アニメーター
+    [SerializeField]
+    private Animator _animator;
+    //アニメカウント
+    private float _animecount =0;
+    private bool _animePlaying;
 
     //ステータス
     public int hp = 100;
@@ -47,6 +53,7 @@ public class Player : MonoBehaviour
         _force = transform.position;
         _rb = GetComponent<Rigidbody>();
         _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //_animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -58,16 +65,44 @@ public class Player : MonoBehaviour
         {
             gamemode = _gm.GetGameMode();
         }
+        else
+        {
+            gamemode = 1;
+        }
+
+        if(gamemode == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _animator.SetBool("opening", true);
+                _animePlaying = true;
+            }
+            if(_animePlaying && _animecount <= 2.2f)
+            {
+                _animecount += 1 * Time.deltaTime;
+            }
+            else if(_animePlaying && _animecount >= 2.2f)
+            {
+                _gm.SetGameMode(1);
+                _animator.SetBool("opening", false);
+                _animePlaying = false;
+                _animecount = 0;
+            }
+        }
 
         if (gamemode == 1)
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _animator.SetBool("opening", false);
+            }
             //移動処理
             Move();
             //スピード調整
             SpeedControl();
             //UI変更処理
             UIUpdate();
-
+            ItemThrow();
         }
         
 

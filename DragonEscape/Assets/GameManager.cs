@@ -27,4 +27,8 @@ public class GameManager : MonoBehaviour
     {
         return _gamemode;
     }
+    public void SetGameMode(int gamemode)
+    {
+        _gamemode = gamemode;
+    }
 }
