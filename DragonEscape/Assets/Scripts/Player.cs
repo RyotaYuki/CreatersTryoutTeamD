@@ -32,7 +32,12 @@ public class Player : MonoBehaviour
     //カメラ操作用
     [SerializeField]
     private GameObject _camera;
-
+    private Animator _cameraAnimator;
+    [SerializeField]
+    private GameObject _canvas;//キャンバス
+    [SerializeField]
+    private GameObject[] _UIs;//
+    
     //速度処理用
     private Vector3 _force;
     [SerializeField]
@@ -54,6 +59,15 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         //_animator = GetComponent<Animator>();
+        if (!_camera)
+        {
+            _camera = GameObject.Find("Main Camera");
+        }
+
+        if (_camera)
+        {
+            _cameraAnimator = _camera.GetComponent<Animator>();
+        }
     }
 
     // Update is called once per frame
@@ -61,6 +75,8 @@ public class Player : MonoBehaviour
     {
         //ゲームマネージャーから現在のゲームの状態を取得
         int gamemode = 0;
+
+        //ゲームマネージャーがいなかった時はgamemodeをステージプレイに設定します。
         if (_gm)
         {
             gamemode = _gm.GetGameMode();
@@ -70,32 +86,15 @@ public class Player : MonoBehaviour
             gamemode = 1;
         }
 
+
         if(gamemode == 0)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _animator.SetBool("opening", true);
-                _animePlaying = true;
-            }
-            if(_animePlaying && _animecount <= 2.2f)
-            {
-                _animecount += 1 * Time.deltaTime;
-            }
-            else if(_animePlaying && _animecount >= 2.2f)
-            {
-                _gm.SetGameMode(1);
-                _animator.SetBool("opening", false);
-                _animePlaying = false;
-                _animecount = 0;
-            }
+            OpeningAnime();
         }
 
         if (gamemode == 1)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _animator.SetBool("opening", false);
-            }
+
             //移動処理
             Move();
             //スピード調整
@@ -107,6 +106,35 @@ public class Player : MonoBehaviour
         
 
 
+    }
+    void OpeningAnime()
+    {
+
+        _cameraAnimator.SetBool("opening", true);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _animator.SetBool("opening", true);
+            _animePlaying = true;
+        }
+
+        if (_animePlaying)
+        {
+            _cameraAnimator.SetBool("opening", false);
+        }
+
+        if (_animePlaying && _animecount <= 2.2f)
+        {
+            _animecount += 1 * Time.deltaTime;
+        }
+        else if (_animePlaying && _animecount >= 2.2f)
+        {
+
+            _gm.SetGameMode(1);
+            _animator.SetBool("opening", false);
+            _cameraAnimator.enabled = false;
+            _animePlaying = false;
+            _animecount = 0;
+        }
     }
 
     void Move()
@@ -136,12 +164,38 @@ public class Player : MonoBehaviour
             transform.Rotate(0, 0, -Z_Rotation);
         }
     }
+
     //ＵＩ更新
     void UIUpdate()
     {
         //UI変更処理
         hpbar.fillAmount = (float)hp / (float)maxhp;
         moneyText.text = _money + "＄";
+    }
+
+    void UIFeedIn()
+    {
+        foreach(GameObject ui in _UIs)
+        {
+            Color c = Color.black;
+            if (ui.GetComponent<Image>())
+            {
+                Image image = ui.GetComponent<Image>();
+                c = image.color;
+                image.color = new Color(c.r,c.g,c.b,c.a + 0.1f);
+            }
+            if (ui.GetComponent<Text>())
+            {
+                Text text = ui.GetComponent<Text>();
+                c = text.color;
+                text.color = new Color(c.r, c.g, c.b, c.a + 0.1f);
+            }
+        }
+    }
+
+    void UIFeedOut()
+    {
+
     }
 
     //スピード更新
