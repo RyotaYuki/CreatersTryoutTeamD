@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Money
   - Wall
+  - Point
   layers:
   - Default
   - TransparentFX

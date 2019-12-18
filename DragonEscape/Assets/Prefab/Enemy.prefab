@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7878503202395363160}
   - component: {fileID: 7878503202395363159}
   - component: {fileID: 7878503202395363158}
-  - component: {fileID: 7878503202395363157}
+  - component: {fileID: 984759251448086060}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -132,7 +132,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7878503202395363157
+--- !u!114 &984759251448086060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,9 +141,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7878503202395363156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa0ca13ad811144f96b540c5f28491c, type: 3}
+  m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 1
-  velocity: 3
-  lowVelocity: 0.5
+  _hightVelocity: 10
+  _velocity: 6
+  _lowVelocity: 1
+  points: []
+  checkPL: {fileID: 0}
