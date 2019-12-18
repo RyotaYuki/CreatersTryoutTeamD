@@ -27,13 +27,4 @@ public class CameraController : MonoBehaviour
 
 
     }
-
-    public void LeftMoveCamera()
-    {
-        //_assistMove = -5.0f;
-    }
-    public void RightMoveCamera()
-    {
-        //_assistMove = 5.0f;
-    }
 }
