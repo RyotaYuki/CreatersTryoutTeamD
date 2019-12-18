@@ -27,6 +27,12 @@ public class Player : MonoBehaviour
     //速度処理用
     private Vector3 _force;
 
+    [SerializeField]
+    private float forwordSpeed = 10; //速度係数
+    [SerializeField]
+    private float rotateSpeed = 5;//回転係数
+
+
     private Rigidbody _rb;
     private Vector3 movevector;
     public float moveForceMultiplier; // 移動速度の入力に対する追従度
@@ -75,24 +81,13 @@ public class Player : MonoBehaviour
     void Move()
     {
 
-        _moveX = Input.GetAxis("Horizontal") * 5 *  _speed * Time.deltaTime;
-        _moveY = Input.GetAxis("Vertical") * 5 * _speed * Time.deltaTime;
-        //_moveX += Input.GetAxis("QEHor") * 5 * _speed * Time.deltaTime;
+        _moveY = Input.GetAxis("Vertical") * forwordSpeed * _speed * Time.deltaTime;
         _force = transform.up * _moveY * 10;
 
         _rb.AddForce(_force);
         movevector = _force;
-
-        if (_moveX > 0)
-        {
-            _camera.GetComponent<CameraController>().LeftMoveCamera();
-        }
-        else if(_moveX < 0)
-        {
-            _camera.GetComponent<CameraController>().RightMoveCamera();
-        }
-
-        float Z_Rotation = Input.GetAxis("Horizontal");
+        
+        float Z_Rotation = Input.GetAxis("Horizontal") * rotateSpeed;
 
         transform.Rotate(0, 0, -Z_Rotation);
 
