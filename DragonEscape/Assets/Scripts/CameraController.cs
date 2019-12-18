@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = GameObject.FindWithTag("Player");
         
     }
 
@@ -18,7 +19,13 @@ public class CameraController : MonoBehaviour
     void Update()
     {
 
-        transform.position = new Vector3(_player.transform.position.x + _assistMove,transform.position.y,_player.transform.position.z);
+        if (_player)
+        {
+            transform.position = new Vector3(_player.transform.position.x + _assistMove, transform.position.y, _player.transform.position.z);
+        }
+
+
+
     }
 
     public void LeftMoveCamera()
