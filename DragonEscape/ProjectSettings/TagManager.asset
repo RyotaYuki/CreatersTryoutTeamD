@@ -7,6 +7,7 @@ TagManager:
   - Money
   - Wall
   - Point
+  - Smoke
   layers:
   - Default
   - TransparentFX
