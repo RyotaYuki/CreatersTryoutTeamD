@@ -23,6 +23,7 @@ public class PlayeAlphatype : MonoBehaviour
     [SerializeField] private float nowRotationSpeed;
     [SerializeField] private Vector3 moveDir;
     [SerializeField] private Vector3 nowMoveDir;
+    [SerializeField] private int inDriftDirection;
     [SerializeField] private float gearChangeCount;
     [Space,Header("Parameter")]
     [SerializeField] private int minGear;
@@ -35,15 +36,12 @@ public class PlayeAlphatype : MonoBehaviour
     [Space]
     [SerializeField] private float gearChangeTime;
     [SerializeField] private float rotationSpeed;
-
+    
+    protected Action brakeAction;
+    protected Action driftAction;
 
     private Vector2 inputAxis;
-
-    private void Awake()
-    {
-        
-    }
-
+    
     private void Start()
     {
         nowTorque = parameter[minGear].minTorque;
@@ -56,38 +54,81 @@ public class PlayeAlphatype : MonoBehaviour
 
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space))
         {
+            //rotationCar_Drift();
+            rotationCar_Normal();
             drift();
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
             moveDirUpdate();
+            rotationCar_Normal();
             acceleration();
         }
         else if (Input.GetKey(KeyCode.Space))
         {
             moveDirUpdate();
+            rotationCar_Normal();
             braking();
         }
         else
         {
             moveDirUpdate();
+            rotationCar_Normal();
             deceleration();
         }
+        transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
     }
 
-    private void FixedUpdate()
+    private void rotationCar_Normal()
     {
+        nowRotationSpeed = nowSpeed * nowRotationSpeed <= 1 ? nowSpeed * nowRotationSpeed : nowRotationSpeed;
         //Axisの入力があったら回転する
-        if (inputAxis.x!=0 || inputAxis.y!=0)
+        if (inputAxis.x != 0 || inputAxis.y != 0)
         {
             var cameraForward = Vector3.Scale(Camera.main.transform.up, new Vector3(1, 0, 1)).normalized;
             Vector3 lookDirection = inputAxis.x * Camera.main.transform.right + inputAxis.y * cameraForward;
             Quaternion rotation = Quaternion.LookRotation(lookDirection);
             transform.localRotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * nowRotationSpeed);
         }
-
-        transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
     }
+
+    private void rotationCar_Drift()
+    {
+        //Axisの入力があったら回転する
+        if (inputAxis.x != 0 || inputAxis.y != 0)
+        {
+            var rot = transform.localRotation;
+            var cameraForward = Vector3.Scale(Camera.main.transform.up, new Vector3(1, 0, 1)).normalized;
+            Vector3 lookDirection = inputAxis.x * Camera.main.transform.right + inputAxis.y * cameraForward;
+            Quaternion lookRotation = Quaternion.LookRotation(lookDirection);
+            if (inDriftDirection == 0)
+            {
+                if (rot.y == lookRotation.y)
+                {
+                    return;
+                }
+                else if (rot.y < lookRotation.y)
+                {
+                    inDriftDirection = 1;
+                }
+                else if (rot.y > lookRotation.y)
+                {
+                    inDriftDirection = -1;
+                }
+            }
+
+            transform.Rotate(new Vector3(0, inDriftDirection*nowRotationSpeed, 0));
+            //rot.y += inDriftDirection * Time.deltaTime * nowRotationSpeed;
+            //transform.localRotation = rot;
+        }
+        else
+        {
+            inDriftDirection = 0;
+        }
+
+
+    }
+
 
     /// <summary>
     /// 加速
@@ -214,7 +255,7 @@ public class PlayeAlphatype : MonoBehaviour
     /// </summary>
     private void drift()
     {
-        nowRotationSpeed = rotationSpeed / 1.5f;
+        nowRotationSpeed += nowRotationSpeed <= 10 ? rotationSpeed * Time.deltaTime : 0;
         //最低速度まで減速する
         if (nowSpeed >= parameter[nowGear].minSpeed && nowSpeed >= 0)
         {
@@ -245,13 +286,14 @@ public class PlayeAlphatype : MonoBehaviour
             }
         }
 
-        nowMoveDir = moveDir + transform.forward * 0.2f;
+        nowMoveDir = moveDir + transform.forward * 0.25f;
     }
 
     private void gearChange_Up()
     {
         gearChangeCount = 0;
         ++nowGear;
+        nowSpeed = parameter[nowGear].minSpeed;
     }
 
     private void gearChange_Down()
@@ -272,5 +314,37 @@ public class PlayeAlphatype : MonoBehaviour
         nowMoveDir = transform.forward;
         moveDir = transform.forward;
         nowRotationSpeed = rotationSpeed;
+    }
+
+    protected void PlayerUpdate()
+    {
+        inputAxis.x = Input.GetAxis("Horizontal");
+        inputAxis.y = Input.GetAxis("Vertical");
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space))
+        {
+            //rotationCar_Drift();
+            rotationCar_Normal();
+            drift();
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveDirUpdate();
+            rotationCar_Normal();
+            acceleration();
+        }
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            moveDirUpdate();
+            rotationCar_Normal();
+            braking();
+        }
+        else
+        {
+            moveDirUpdate();
+            rotationCar_Normal();
+            deceleration();
+        }
+        transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
     }
 }
