@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
 
         if (_camera)
         {
-            _cameraAnimator = _camera.GetComponent<Animator>();
+            _cameraAnimator = GameObject.Find("CameraController").GetComponent<Animator>();
         }
     }
 
