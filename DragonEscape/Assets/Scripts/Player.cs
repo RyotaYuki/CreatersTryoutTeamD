@@ -72,6 +72,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Sprite[] _moneySprites;
 
+    [SerializeField]
+    private AudioSource audioS;
+    [SerializeField]
+    private AudioClip idleNoise;
+    [SerializeField]
+    private AudioClip CloseDoor;
+    [SerializeField]
+    private AudioClip StartUp;
+    [SerializeField]
+    private AudioClip drift;
+
     
 
     // Start is called before the first frame update
@@ -98,6 +109,10 @@ public class Player : MonoBehaviour
         {
             _canvasAnimator = _canvas.GetComponent<Animator>();
         }
+        audioS.PlayOneShot(StartUp);
+        audioS.clip = idleNoise;
+        audioS.Play();
+        audioS.loop = true;
     }
 
     // Update is called once per frame
@@ -139,6 +154,8 @@ public class Player : MonoBehaviour
     }
     void OpeningAnime()
     {
+        
+
         _cameraAnimator.SetBool(_aboolopening, true);
         _canvasAnimator.SetBool(_aboolopening, true);
         if (Input.GetKeyDown(KeyCode.Space))
@@ -159,7 +176,8 @@ public class Player : MonoBehaviour
         }
         else if (_animePlaying && _animecount >= 2.0f)
         {
-
+            audioS.loop = false;
+            audioS.PlayOneShot(CloseDoor);
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
             _cameraAnimator.enabled = false;
@@ -202,6 +220,10 @@ public class Player : MonoBehaviour
             //transform.Rotate(0, 0, -Z_Rotation);
             transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
 
+        }
+        if (Input.GetButtonDown("shift"))
+        {
+            audioS.PlayOneShot(drift);
         }
     }
 
