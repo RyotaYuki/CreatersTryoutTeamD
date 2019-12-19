@@ -56,34 +56,28 @@ public class PlayeAlphatype : MonoBehaviour
 
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space))
         {
-            nowRotationSpeed = rotationSpeed / 1.5f;
             drift();
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
-            nowMoveDir = transform.forward;
-            moveDir = transform.forward;
-            nowRotationSpeed = rotationSpeed;//関数化
+            moveDirUpdate();
             acceleration();
         }
         else if (Input.GetKey(KeyCode.Space))
         {
-            nowMoveDir = transform.forward;
-            moveDir = transform.forward;
-            nowRotationSpeed = rotationSpeed;
+            moveDirUpdate();
             braking();
         }
         else
         {
-            nowMoveDir = transform.forward;
-            moveDir = transform.forward;
-            nowRotationSpeed = rotationSpeed;
+            moveDirUpdate();
             deceleration();
         }
     }
 
     private void FixedUpdate()
     {
+        //Axisの入力があったら回転する
         if (inputAxis.x!=0 || inputAxis.y!=0)
         {
             var cameraForward = Vector3.Scale(Camera.main.transform.up, new Vector3(1, 0, 1)).normalized;
@@ -220,6 +214,7 @@ public class PlayeAlphatype : MonoBehaviour
     /// </summary>
     private void drift()
     {
+        nowRotationSpeed = rotationSpeed / 1.5f;
         //最低速度まで減速する
         if (nowSpeed >= parameter[nowGear].minSpeed && nowSpeed >= 0)
         {
@@ -270,5 +265,12 @@ public class PlayeAlphatype : MonoBehaviour
         Vector3 axisPosition = rotationAxisCenter.transform.localPosition;
         axisPosition.z += pos * Time.deltaTime;
         rotationAxisCenter.transform.localPosition = axisPosition;
+    }
+
+    private void moveDirUpdate()
+    {
+        nowMoveDir = transform.forward;
+        moveDir = transform.forward;
+        nowRotationSpeed = rotationSpeed;
     }
 }
