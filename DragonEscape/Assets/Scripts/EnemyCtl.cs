@@ -54,12 +54,16 @@ public class EnemyCtl : MonoBehaviour
     private bool _speechPopFlag;    
     private SpriteEffectMng _spriteEffectMng;
 
+    private AudioSource _siren;
+    private bool _sirenFlag;
+
     //タグ名
     private string money  = "Money";
     private string wall   = "Wall";
     private string point  = "Point";
     private string smoke  = "Smoke";
     private string speech = "Speech";
+    private string siren = "Siren";
 
     // 初期化
     private void Start()
@@ -73,6 +77,8 @@ public class EnemyCtl : MonoBehaviour
         _speechPopFlag = false;
         _timeFlame = 0;
         _spriteEffectMng = GameObject.FindGameObjectWithTag("SpriteEffectMng").GetComponent<SpriteEffectMng>();
+        _siren = this.transform.gameObject.GetComponent<AudioSource>();
+        _sirenFlag = false;
 
         for (int cnt = 0; cnt < this.transform.childCount; cnt++)
         {
@@ -96,6 +102,7 @@ public class EnemyCtl : MonoBehaviour
         }
         else
         {
+            _sirenFlag = true;
             PatrolMove();
         }
     }
@@ -136,6 +143,11 @@ public class EnemyCtl : MonoBehaviour
     //プレイヤーを追従する
     private void FollowPlayer()
     {
+        if (_sirenFlag)
+        {
+            _siren.Play();
+            _sirenFlag = false;
+        }
         //smokeが焚かれていたら動かないようにする
         if (smokeFlag)
         {
@@ -179,6 +191,7 @@ public class EnemyCtl : MonoBehaviour
     //パトロールする
     private void PatrolMove()
     {
+        _siren.Stop();
         _navmesh.acceleration = 8;
         _navmesh.speed = _velocity;
         _navmesh.destination = _pointList[(int)_patrol].transform.position;
