@@ -11,6 +11,24 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private GameObject _ClearUI;
 
+    [SerializeField]
+    private bool _generateMode = false;
+    [SerializeField]
+    private GameObject[] _mapPaterns;
+
+    private void Start()
+    {
+        if (_generateMode)
+        {
+            int r = Random.Range(0, 3);
+            foreach (GameObject mPatern in _mapPaterns)
+            {
+                mPatern.SetActive(false);
+            }
+            _mapPaterns[r].SetActive(true);
+        }
+    }
+
     public int GetGameMode()
     {
         return _gamemode;

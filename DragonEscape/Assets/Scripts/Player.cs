@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Text _moneyText;
 
+
     
 
     // Start is called before the first frame update
@@ -129,8 +130,6 @@ public class Player : MonoBehaviour
 
             ItemThrow();
         }
-        
-
 
     }
     void OpeningAnime()
@@ -177,6 +176,7 @@ public class Player : MonoBehaviour
     {
         //移動入力受け取り
         _moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
+        _moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
         _force = transform.up * _moveY * _forwordSpeed;
         //
         _rb.AddForce(_force);
@@ -227,6 +227,11 @@ public class Player : MonoBehaviour
             //UI変更処理
             UIUpdate();
         }
+    }
+
+    public void AddMoney(int money)
+    {
+        _money += money;
     }
 
     private void OnCollisionEnter(Collision collision)
