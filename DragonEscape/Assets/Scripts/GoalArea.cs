@@ -21,7 +21,7 @@ public class GoalArea : MonoBehaviour
         if(other.tag == "Player")
         {
             GameManager gm = GameManager.Instance;
-
+            gm.GameClear();
         }
     }
 }

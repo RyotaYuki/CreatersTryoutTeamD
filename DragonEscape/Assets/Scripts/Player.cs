@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -72,18 +73,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Sprite[] _moneySprites;
 
+    //リザルト用
     [SerializeField]
-    private AudioSource audioS;
+    private Image[] _goalUIs;
     [SerializeField]
-    private AudioClip idleNoise;
+    private Image[] _havemoneyUIs;
     [SerializeField]
-    private AudioClip CloseDoor;
-    [SerializeField]
-    private AudioClip StartUp;
-    [SerializeField]
-    private AudioClip drift;
+    private Image[] _yourpointUIs;
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -109,10 +107,6 @@ public class Player : MonoBehaviour
         {
             _canvasAnimator = _canvas.GetComponent<Animator>();
         }
-        audioS.PlayOneShot(StartUp);
-        audioS.clip = idleNoise;
-        audioS.Play();
-        audioS.loop = true;
     }
 
     // Update is called once per frame
@@ -148,14 +142,23 @@ public class Player : MonoBehaviour
 
             ItemThrow();
         }
+
+        if(gamemode == 2)
+        {
+            MoneyCheck(_goalUIs, _money);
+            MoneyCheck(_havemoneyUIs, _money);
+            MoneyCheck(_yourpointUIs, _money);
+            if (Input.GetButtonDown("money"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
         
 
 
     }
     void OpeningAnime()
     {
-        
-
         _cameraAnimator.SetBool(_aboolopening, true);
         _canvasAnimator.SetBool(_aboolopening, true);
         if (Input.GetKeyDown(KeyCode.Space))
@@ -176,8 +179,7 @@ public class Player : MonoBehaviour
         }
         else if (_animePlaying && _animecount >= 2.0f)
         {
-            audioS.loop = false;
-            audioS.PlayOneShot(CloseDoor);
+
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
             _cameraAnimator.enabled = false;
@@ -220,10 +222,6 @@ public class Player : MonoBehaviour
             //transform.Rotate(0, 0, -Z_Rotation);
             transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
 
-        }
-        if (Input.GetButtonDown("shift"))
-        {
-            audioS.PlayOneShot(drift);
         }
     }
 
@@ -296,10 +294,6 @@ public class Player : MonoBehaviour
             numI.sprite = _moneySprites[one];
 
         }
-
-
-
-
     }
 
 

@@ -8,6 +8,8 @@ public class GameManager : MonoSingleton<GameManager>
     private float _gamespeed { get; set; }//ゲームの進行スピード
     private float _elapsedtime { get; set; }//ゲームが始まってから経った時間
     private int _gamemode { get; set; }//現在のゲームモード 0がタイトル　1がプレイ中　2がリザルト
+    [SerializeField]
+    private GameObject _ClearUI;
 
     public int GetGameMode()
     {
@@ -21,6 +23,8 @@ public class GameManager : MonoSingleton<GameManager>
     public void GameClear()
     {
         _gamemode = 2;
+        _ClearUI.SetActive(true);
+
 
     }
     public void GameOver()
