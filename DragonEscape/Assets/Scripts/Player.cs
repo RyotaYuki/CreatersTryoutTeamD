@@ -154,7 +154,8 @@ public class Player : MonoBehaviour
         {
 
             //移動処理
-            Move();
+            KeybordInput();
+            ControllerInput();
             //スピード調整
             SpeedControl();
 
@@ -240,19 +241,33 @@ public class Player : MonoBehaviour
         //_moneyText.text = _money + "＄";
     }
 
+    //入力受け取り
+    void ControllerInput() {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
+        Move(moveX, moveY);
+    }
+    void KeybordInput()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
+        Move(moveX, moveY);
+    }
 
 
-    void Move()
+
+    void Move(float moveX,float moveY)
     {
         //移動入力受け取り
-        _moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
-        _moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
-        _force = transform.up * _moveY * _forwordSpeed;
+        //_moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
+        //_moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
+
+        _force = transform.up * moveY * _forwordSpeed;
         //
         _rb.AddForce(_force);
         _movevector = _force;
         //
-        float Z_Rotation = Input.GetAxis("Horizontal") * _rotateSpeed * _speed * Time.deltaTime;
+        float Z_Rotation = moveX * _rotateSpeed * _speed * Time.deltaTime;
         Vector3 rotatePoint = transform.position - (transform.up * (_speed / 5));
         transform.RotateAround(rotatePoint,new Vector3(0,1,0),Z_Rotation);
         //慣性制限
