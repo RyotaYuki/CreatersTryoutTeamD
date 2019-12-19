@@ -37,8 +37,9 @@ public class EnemyCtl : MonoBehaviour
     private PLEnterCheck _pLEnterCheck;
 
     private bool smokeFlag = false;
-    //private float smokeTime = 5;
-    //private float deltime = 0;
+    private float smokeTime = 3;
+    private smoke _smokeScr;
+    private float deltime = 0;
     private bool onceFlag = true;
 
     private float _displaySpeed = 0.1f;     // 表示速度
@@ -114,6 +115,8 @@ public class EnemyCtl : MonoBehaviour
         {
             _navmesh.speed = 0;
             _navmesh.acceleration = 10;
+            _smokeScr = other.GetComponent<smoke>();
+            smokeTime = _smokeScr.GetCount();
             smokeFlag = true;
         }
 
@@ -137,12 +140,12 @@ public class EnemyCtl : MonoBehaviour
         //smokeが焚かれていたら動かないようにする
         if (smokeFlag)
         {
-            //deltime += Time.deltaTime;
-            //if (deltime > smokeTime)
-            //{
-            //    deltime = 0;
-            //    smokeFlag = false;
-            //}
+            deltime += Time.deltaTime;
+            if (deltime > smokeTime)
+            {
+                deltime = 0;
+                smokeFlag = false;
+            }
         }
         else
         {
