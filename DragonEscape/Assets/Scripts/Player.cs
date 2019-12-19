@@ -13,17 +13,25 @@ public class Player : MonoBehaviour
     //アニメカウント
     private float _animecount =0;
     private bool _animePlaying;
+    //オープニングアニメーターのトリガー
+    [SerializeField]
+    private string _aboolopening = "opening";
 
     //ステータス
-    public int hp = 100;
-    public int maxhp = 100;
+    [SerializeField]
+    private int _hp = 100;
+    [SerializeField]
+    private int _maxhp = 100;
     [SerializeField]
     private float _speed = 1.0f;
-    public float minspeed = 1.0f;
-    public float maxspeed = 3.0f;
+    [SerializeField]
+    private float _minspeed = 1.0f;
+    [SerializeField]
+    private float _maxspeed = 3.0f;
     private int _money = 10000000;
 
-    public GameObject moneyObj;
+    [SerializeField]
+    private GameObject _moneyObj;
 
     //移動受付用
     private float _moveX;
@@ -35,29 +43,43 @@ public class Player : MonoBehaviour
     private Animator _cameraAnimator;
     [SerializeField]
     private GameObject _canvas;//キャンバス
-    [SerializeField]
-    private GameObject[] _UIs;//
+
     
     //速度処理用
     private Vector3 _force;
     [SerializeField]
-    private float forwordSpeed = 10; //速度係数
+    private float _forwordSpeed = 7; //速度係数
     [SerializeField]
-    private float rotateSpeed = 5;//回転係数
+    private float _rotateSpeed = 2.5f;//回転係数
+    private float _addSpeedPower = 10;//速度上昇係数
+    private float _downSpeedPower = 30;//速度減少係数
+
     private Rigidbody _rb;
-    private Vector3 movevector;
-    public float moveForceMultiplier; // 移動速度の入力に対する追従度
+    private Vector3 _movevector;
+    [SerializeField]
+    private float _moveForceMultiplier; // 移動速度の入力に対する追従度
 
     //HPバー用
-    public Image hpbar;
-    public Text moneyText;
+    [SerializeField]
+    private Image _hpbar;
+    [SerializeField]
+    private Text _moneyText;
+
+    
 
     // Start is called before the first frame update
     void Start()
     {
         _force = transform.position;
         _rb = GetComponent<Rigidbody>();
-        _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gm = GameManager.Instance;
+        if (!_hpbar) {
+            _hpbar = GameObject.Find("hpbar").GetComponent<Image>();
+        }
+        if (!_moneyText)
+        {
+            _moneyText = GameObject.Find("money").GetComponent<Text>();
+        }
         //_animator = GetComponent<Animator>();
         if (!_camera)
         {
@@ -66,7 +88,7 @@ public class Player : MonoBehaviour
 
         if (_camera)
         {
-            _cameraAnimator = _camera.GetComponent<Animator>();
+            _cameraAnimator = GameObject.Find("CameraController").GetComponent<Animator>();
         }
     }
 
@@ -75,6 +97,7 @@ public class Player : MonoBehaviour
     {
         //ゲームマネージャーから現在のゲームの状態を取得
         int gamemode = 0;
+
 
         //ゲームマネージャーがいなかった時はgamemodeをステージプレイに設定します。
         if (_gm)
@@ -99,8 +122,7 @@ public class Player : MonoBehaviour
             Move();
             //スピード調整
             SpeedControl();
-            //UI変更処理
-            UIUpdate();
+
             ItemThrow();
         }
         
@@ -109,17 +131,16 @@ public class Player : MonoBehaviour
     }
     void OpeningAnime()
     {
-
-        _cameraAnimator.SetBool("opening", true);
+        _cameraAnimator.SetBool(_aboolopening, true);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _animator.SetBool("opening", true);
+            _animator.SetBool(_aboolopening, true);
             _animePlaying = true;
         }
 
         if (_animePlaying)
         {
-            _cameraAnimator.SetBool("opening", false);
+            _cameraAnimator.SetBool(_aboolopening, false);
         }
 
         if (_animePlaying && _animecount <= 2.2f)
@@ -130,72 +151,46 @@ public class Player : MonoBehaviour
         {
 
             _gm.SetGameMode(1);
-            _animator.SetBool("opening", false);
+            _animator.SetBool(_aboolopening, false);
             _cameraAnimator.enabled = false;
             _animePlaying = false;
             _animecount = 0;
         }
     }
-
-    void Move()
-    {
-
-
-
-        _moveY = Input.GetAxis("Vertical") * forwordSpeed * _speed * Time.deltaTime;
-        _force = transform.up * _moveY * 10;
-
-        _rb.AddForce(_force);
-        movevector = _force;
-        
-        float Z_Rotation = Input.GetAxis("Horizontal") * rotateSpeed;
-
-        transform.Rotate(0, 0, -Z_Rotation);
-
-        Z_Rotation = Input.GetAxis("QEHor");
-
-        transform.Rotate(0, 0, -Z_Rotation);
-
-
-        _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x,0,movevector.z) - _rb.velocity));
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            _rb.AddForce(moveForceMultiplier * (new Vector3(movevector.x, 0, movevector.z) - _rb.velocity));
-            transform.Rotate(0, 0, -Z_Rotation);
-        }
-    }
-
     //ＵＩ更新
     void UIUpdate()
     {
         //UI変更処理
-        hpbar.fillAmount = (float)hp / (float)maxhp;
-        moneyText.text = _money + "＄";
+        _hpbar.fillAmount = (float)_hp / (float)_maxhp;
+        _moneyText.text = _money + "＄";
     }
 
-    void UIFeedIn()
+    void Move()
     {
-        foreach(GameObject ui in _UIs)
+        //移動入力受け取り
+        _moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
+        _force = transform.up * _moveY * _forwordSpeed;
+
+        //
+        _rb.AddForce(_force);
+        _movevector = _force;
+        //
+        float Z_Rotation = Input.GetAxis("Horizontal") * _rotateSpeed * _speed * Time.deltaTime;
+        Vector3 rotatePoint = transform.position - (transform.up * (_speed / 5));
+        transform.RotateAround(rotatePoint,new Vector3(0,1,0),Z_Rotation);
+
+
+        //慣性制限
+        _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x,0,_movevector.z) - _rb.velocity));
+
+        //指定キー入れてるときより慣性を制限するように
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            Color c = Color.black;
-            if (ui.GetComponent<Image>())
-            {
-                Image image = ui.GetComponent<Image>();
-                c = image.color;
-                image.color = new Color(c.r,c.g,c.b,c.a + 0.1f);
-            }
-            if (ui.GetComponent<Text>())
-            {
-                Text text = ui.GetComponent<Text>();
-                c = text.color;
-                text.color = new Color(c.r, c.g, c.b, c.a + 0.1f);
-            }
+            _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+            //transform.Rotate(0, 0, -Z_Rotation);
+            transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
+
         }
-    }
-
-    void UIFeedOut()
-    {
-
     }
 
     //スピード更新
@@ -204,15 +199,15 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey("w"))
         {
-            if (maxspeed > _speed)
+            if (_maxspeed > _speed)
             {
-                _speed += 10.0f * Time.deltaTime;
+                _speed += _addSpeedPower * Time.deltaTime;
             }
         }
 
-        else if (minspeed < _speed)
+        else if (_minspeed < _speed)
         {
-            _speed -= 30.0f * Time.deltaTime;
+            _speed -= _downSpeedPower * Time.deltaTime;
         }
     }
 
@@ -221,8 +216,10 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown("f"))
         {
-            Instantiate(moneyObj, transform.position, Quaternion.identity);
+            Instantiate(_moneyObj, transform.position, Quaternion.identity);
             _money -= 10000;
+            //UI変更処理
+            UIUpdate();
         }
     }
 
@@ -232,8 +229,10 @@ public class Player : MonoBehaviour
         {
             if (_speed >= 10)
             {
-                hp -= 1;
+                _hp -= 1;
                 _speed = 9;
+                //UI変更処理
+                UIUpdate();
             }
         }
     }
