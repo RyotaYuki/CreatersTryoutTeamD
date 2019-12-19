@@ -285,13 +285,14 @@ public class Player : MonoBehaviour
 
     private void MoneyCheck(Image[] nums,int money)
     {
-        int one = 0;
+        int digit = 0;
         int m = money;
         foreach (Image numI in nums)
         {
-            one = m % 10;
+
+            digit = m % 10;
             m /= 10;
-            numI.sprite = _moneySprites[one];
+            numI.sprite = _moneySprites[digit];
 
         }
     }
