@@ -2777,6 +2777,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7588230674010475936, guid: 4a1c0ea92f65e1c4aa30f1893741d4d9,
+        type: 3}
+      propertyPath: _ClearUI
+      value: 
+      objectReference: {fileID: 1832278171}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a1c0ea92f65e1c4aa30f1893741d4d9, type: 3}
 --- !u!114 &562921520 stripped
@@ -10844,8 +10849,24 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5807813767066614599, guid: 0123d8ffd0d27cf409f10bc8e2bf15b4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807813767066614599, guid: 0123d8ffd0d27cf409f10bc8e2bf15b4,
+        type: 3}
+      propertyPath: m_Name
+      value: GameClearBG
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0123d8ffd0d27cf409f10bc8e2bf15b4, type: 3}
+--- !u!1 &1832278171 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5807813767066614599, guid: 0123d8ffd0d27cf409f10bc8e2bf15b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1832278170}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1861337868
 GameObject:
   m_ObjectHideFlags: 0
