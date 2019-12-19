@@ -246,6 +246,11 @@ public class Player : MonoBehaviour
                 _speed = 9;
                 //UI変更処理
                 UIUpdate();
+                
+            }
+            if(_hp <= 0)
+            {
+                _gm.GameOver();
             }
         }
     }

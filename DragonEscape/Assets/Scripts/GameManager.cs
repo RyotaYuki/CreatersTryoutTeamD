@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -15,5 +16,16 @@ public class GameManager : MonoSingleton<GameManager>
     public void SetGameMode(int gamemode)
     {
         _gamemode = gamemode;
+    }
+
+    public void GameClear()
+    {
+        _gamemode = 2;
+
+    }
+    public void GameOver()
+    {
+        _gamemode = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
