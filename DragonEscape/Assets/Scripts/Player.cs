@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
         _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x,0,_movevector.z) - _rb.velocity));
 
         //指定キー入れてるときより慣性を制限するように
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetButton("shift"))
         {
             _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
             //transform.Rotate(0, 0, -Z_Rotation);
@@ -203,7 +203,7 @@ public class Player : MonoBehaviour
     void SpeedControl()
     {
 
-        if (Input.GetKey("w"))
+        if (Input.GetAxis("Vertical") > 0)
         {
             if (_maxspeed > _speed)
             {
@@ -220,14 +220,14 @@ public class Player : MonoBehaviour
     //物を投げる処理
     void ItemThrow()
     {
-        if (Input.GetKeyDown("f"))
+        if (Input.GetButtonDown("money"))
         {
             Instantiate(_moneyObj, transform.position, Quaternion.identity);
             _money -= 10000;
             //UI変更処理
             UIUpdate();
         }
-        if (Input.GetKeyDown("r"))
+        if (Input.GetButtonDown("smoke"))
         {
             Instantiate(_smokeObj, transform.position, Quaternion.identity);
             _money -= 10000;
