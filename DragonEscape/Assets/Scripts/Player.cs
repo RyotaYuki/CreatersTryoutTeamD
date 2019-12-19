@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour
     private float _minspeed = 1.0f;
     [SerializeField]
     private float _maxspeed = 3.0f;
-    private int _money = 10000000;
+    private int _money = 50;
 
     [SerializeField]
     private GameObject _moneyObj;
@@ -70,9 +71,19 @@ public class Player : MonoBehaviour
     private Image _hpbar;
     [SerializeField]
     private Text _moneyText;
+    [SerializeField]
+    private Image[] _moneyUIs;
+    [SerializeField]
+    private Sprite[] _moneySprites;
 
+    //リザルト用
+    [SerializeField]
+    private Image[] _goalUIs;
+    [SerializeField]
+    private Image[] _havemoneyUIs;
+    [SerializeField]
+    private Image[] _yourpointUIs;
 
-    
 
     // Start is called before the first frame update
     void Start()
@@ -150,6 +161,17 @@ public class Player : MonoBehaviour
             ItemThrow();
         }
 
+
+        if (gamemode == 2)
+        {
+            MoneyCheck(_goalUIs, _money);
+            MoneyCheck(_havemoneyUIs, _money);
+            MoneyCheck(_yourpointUIs, _money);
+            if (Input.GetButtonDown("money"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
     }
 
     //オープニング
@@ -194,6 +216,7 @@ public class Player : MonoBehaviour
         {
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
+            MoneyCheck(_moneyUIs, _money);
             Invoke("StopSpeechOff", 2);
             _stopSprite.transform.parent = null;
             _speechbubble.transform.parent = null;
@@ -263,22 +286,39 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("money"))
         {
             Instantiate(_moneyObj, transform.position, Quaternion.identity);
-            _money -= 10000;
+            _money -= 1;
             //UI変更処理
             UIUpdate();
+            MoneyCheck(_moneyUIs, _money);
         }
         if (Input.GetButtonDown("smoke"))
         {
             Instantiate(_smokeObj, transform.position, Quaternion.identity);
-            _money -= 10000;
+            _money -= 1;
             //UI変更処理
             UIUpdate();
+            MoneyCheck(_moneyUIs, _money);
+        }
+    }
+
+    private void MoneyCheck(Image[] nums, int money)
+    {
+        int digit = 0;
+        int m = money;
+        foreach (Image numI in nums)
+        {
+
+            digit = m % 10;
+            m /= 10;
+            numI.sprite = _moneySprites[digit];
+
         }
     }
 
     public void AddMoney(int money)
     {
         _money += money;
+        MoneyCheck(_moneyUIs, _money);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -287,7 +327,7 @@ public class Player : MonoBehaviour
         {
             if (_speed >= 10)
             {
-                _hp -= 1;
+                _hp -= 10;
                 _speed = 9;
                 //UI変更処理
                 UIUpdate();
