@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43667555, g: 0.48427123, b: 0.5645229, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366756, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17367,7 +17367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  _hP: 0
   _hightVelocity: 10
   _velocity: 6
   _lowVelocity: 1
@@ -21966,7 +21966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  _hP: 0
   _hightVelocity: 10
   _velocity: 6
   _lowVelocity: 1
@@ -22650,6 +22650,11 @@ PrefabInstance:
       propertyPath: moneyText
       value: 
       objectReference: {fileID: 17794613}
+    - target: {fileID: 2072110147195629005, guid: ab29f9df90ee046439161d6c137d7583,
+        type: 3}
+      propertyPath: _moveForceMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab29f9df90ee046439161d6c137d7583, type: 3}
 --- !u!1 &888710439
@@ -39021,7 +39026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  _hP: 0
   _hightVelocity: 10
   _velocity: 6
   _lowVelocity: 1
@@ -40706,7 +40711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  _hP: 0
   _hightVelocity: 10
   _velocity: 6
   _lowVelocity: 1
@@ -46996,7 +47001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfd02f9359bb15469bcf2b49154d403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  _hP: 0
   _hightVelocity: 10
   _velocity: 6
   _lowVelocity: 1
