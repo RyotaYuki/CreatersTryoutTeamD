@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -29,7 +28,7 @@ public class Player : MonoBehaviour
     private float _minspeed = 1.0f;
     [SerializeField]
     private float _maxspeed = 3.0f;
-    private int _money = 100;
+    private int _money = 10000000;
 
     [SerializeField]
     private GameObject _moneyObj;
@@ -68,20 +67,8 @@ public class Player : MonoBehaviour
     private Image _hpbar;
     [SerializeField]
     private Text _moneyText;
-    [SerializeField]
-    private Image[] _moneyUIs;
-    [SerializeField]
-    private Sprite[] _moneySprites;
 
-    //リザルト用
-    [SerializeField]
-    private Image[] _goalUIs;
-    [SerializeField]
-    private Image[] _havemoneyUIs;
-    [SerializeField]
-    private Image[] _yourpointUIs;
-
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -142,17 +129,6 @@ public class Player : MonoBehaviour
 
             ItemThrow();
         }
-
-        if(gamemode == 2)
-        {
-            MoneyCheck(_goalUIs, _money);
-            MoneyCheck(_havemoneyUIs, _money);
-            MoneyCheck(_yourpointUIs, _money);
-            if (Input.GetButtonDown("money"))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
         
 
 
@@ -183,8 +159,6 @@ public class Player : MonoBehaviour
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
             _cameraAnimator.enabled = false;
-            UIUpdate();
-            MoneyCheck(_moneyUIs, _money);
             _animePlaying = false;
             _animecount = 0;
         }
@@ -200,7 +174,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         //移動入力受け取り
-        _moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
+        _moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
         _force = transform.up * _moveY * _forwordSpeed;
 
         //
@@ -228,15 +202,10 @@ public class Player : MonoBehaviour
     //スピード更新
     void SpeedControl()
     {
-
-        if (Input.GetAxis("Vertical") > 0)
+        if (_maxspeed > _speed)
         {
-            if (_maxspeed > _speed)
-            {
-                _speed += _addSpeedPower * Time.deltaTime;
-            }
+            _speed += _addSpeedPower * Time.deltaTime;
         }
-
         else if (_minspeed < _speed)
         {
             _speed -= _downSpeedPower * Time.deltaTime;
@@ -249,18 +218,16 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("money"))
         {
             Instantiate(_moneyObj, transform.position, Quaternion.identity);
-            _money -= 1;
+            _money -= 10000;
             //UI変更処理
             UIUpdate();
-            MoneyCheck(_moneyUIs,_money);
         }
         if (Input.GetButtonDown("smoke"))
         {
             Instantiate(_smokeObj, transform.position, Quaternion.identity);
-            _money -= 1;
+            _money -= 10000;
             //UI変更処理
             UIUpdate();
-            MoneyCheck(_moneyUIs, _money);
         }
     }
 
@@ -280,20 +247,6 @@ public class Player : MonoBehaviour
             {
                 _gm.GameOver();
             }
-        }
-    }
-
-    private void MoneyCheck(Image[] nums,int money)
-    {
-        int digit = 0;
-        int m = money;
-        foreach (Image numI in nums)
-        {
-
-            digit = m % 10;
-            m /= 10;
-            numI.sprite = _moneySprites[digit];
-
         }
     }
 
