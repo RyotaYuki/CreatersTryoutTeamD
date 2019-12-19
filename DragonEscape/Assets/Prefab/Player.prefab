@@ -339,13 +339,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737145772}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.32, y: 0, z: 0}
-  m_LocalScale: {x: 0.31392, y: 0.31392008, z: 0.31392008}
+  m_LocalRotation: {x: -0, y: -0.00000008940696, z: 0.7317217, w: 0.68160367}
+  m_LocalPosition: {x: 3.3199997, y: -0.0000008940697, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2072110146952193353}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 94.062004}
 --- !u!212 &1737145774
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -383,7 +383,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 1cbc022b28c3feb47b23ccc61c30fb81, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fcc6ffdbc91f08d4684fbe47c7de7f79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5589,6 +5589,21 @@ MonoBehaviour:
   _moveForceMultiplier: 1
   _hpbar: {fileID: 0}
   _moneyText: {fileID: 0}
+  _moneyUIs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _moneySprites:
+  - {fileID: 21300000, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300002, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300004, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300006, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300008, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300010, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300012, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300014, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300016, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
+  - {fileID: 21300018, guid: 44ec6cef9853115479277ea1841fa0a9, type: 3}
 --- !u!65 &2072110147195629007
 BoxCollider:
   m_ObjectHideFlags: 0

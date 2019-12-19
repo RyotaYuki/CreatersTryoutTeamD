@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -72,7 +73,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Sprite[] _moneySprites;
 
-    
+    //リザルト用
+    [SerializeField]
+    private Image[] _goalUIs;
+    [SerializeField]
+    private Image[] _havemoneyUIs;
+    [SerializeField]
+    private Image[] _yourpointUIs;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -132,6 +141,17 @@ public class Player : MonoBehaviour
             SpeedControl();
 
             ItemThrow();
+        }
+
+        if(gamemode == 2)
+        {
+            MoneyCheck(_goalUIs, _money);
+            MoneyCheck(_havemoneyUIs, _money);
+            MoneyCheck(_yourpointUIs, _money);
+            if (Input.GetButtonDown("money"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
         
 
@@ -274,10 +294,6 @@ public class Player : MonoBehaviour
             numI.sprite = _moneySprites[one];
 
         }
-
-
-
-
     }
 
 
