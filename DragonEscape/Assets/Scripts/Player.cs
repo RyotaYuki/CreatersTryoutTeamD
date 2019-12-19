@@ -171,12 +171,13 @@ public class Player : MonoBehaviour
         //_moneyText.text = _money + "＄";
     }
 
+
+
     void Move()
     {
         //移動入力受け取り
         _moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
         _force = transform.up * _moveY * _forwordSpeed;
-
         //
         _rb.AddForce(_force);
         _movevector = _force;
@@ -184,11 +185,8 @@ public class Player : MonoBehaviour
         float Z_Rotation = Input.GetAxis("Horizontal") * _rotateSpeed * _speed * Time.deltaTime;
         Vector3 rotatePoint = transform.position - (transform.up * (_speed / 5));
         transform.RotateAround(rotatePoint,new Vector3(0,1,0),Z_Rotation);
-
-
         //慣性制限
         _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x,0,_movevector.z) - _rb.velocity));
-
         //指定キー入れてるときより慣性を制限するように
         if (Input.GetButton("shift"))
         {
