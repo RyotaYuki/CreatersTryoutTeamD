@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _moneyObj;
+    [SerializeField]
+    private GameObject _smokeObj;
 
     //移動受付用
     private float _moveX;
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour
     private Animator _cameraAnimator;
     [SerializeField]
     private GameObject _canvas;//キャンバス
+    private Animator _canvasAnimator;
 
     
     //速度処理用
@@ -76,10 +79,6 @@ public class Player : MonoBehaviour
         if (!_hpbar) {
             _hpbar = GameObject.Find("hpbar").GetComponent<Image>();
         }
-        if (!_moneyText)
-        {
-            _moneyText = GameObject.Find("money").GetComponent<Text>();
-        }
         //_animator = GetComponent<Animator>();
         if (!_camera)
         {
@@ -89,6 +88,11 @@ public class Player : MonoBehaviour
         if (_camera)
         {
             _cameraAnimator = GameObject.Find("CameraController").GetComponent<Animator>();
+        }
+
+        if (!_canvasAnimator)
+        {
+            _canvasAnimator = _canvas.GetComponent<Animator>();
         }
     }
 
@@ -132,6 +136,7 @@ public class Player : MonoBehaviour
     void OpeningAnime()
     {
         _cameraAnimator.SetBool(_aboolopening, true);
+        _canvasAnimator.SetBool(_aboolopening, true);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _animator.SetBool(_aboolopening, true);
@@ -141,13 +146,14 @@ public class Player : MonoBehaviour
         if (_animePlaying)
         {
             _cameraAnimator.SetBool(_aboolopening, false);
+            _canvasAnimator.SetBool(_aboolopening, false);
         }
 
-        if (_animePlaying && _animecount <= 2.2f)
+        if (_animePlaying && _animecount <= 2.0f)
         {
             _animecount += 1 * Time.deltaTime;
         }
-        else if (_animePlaying && _animecount >= 2.2f)
+        else if (_animePlaying && _animecount >= 2.0f)
         {
 
             _gm.SetGameMode(1);
@@ -162,7 +168,7 @@ public class Player : MonoBehaviour
     {
         //UI変更処理
         _hpbar.fillAmount = (float)_hp / (float)_maxhp;
-        _moneyText.text = _money + "＄";
+        //_moneyText.text = _money + "＄";
     }
 
     void Move()
@@ -217,6 +223,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown("f"))
         {
             Instantiate(_moneyObj, transform.position, Quaternion.identity);
+            _money -= 10000;
+            //UI変更処理
+            UIUpdate();
+        }
+        if (Input.GetKeyDown("r"))
+        {
+            Instantiate(_smokeObj, transform.position, Quaternion.identity);
             _money -= 10000;
             //UI変更処理
             UIUpdate();

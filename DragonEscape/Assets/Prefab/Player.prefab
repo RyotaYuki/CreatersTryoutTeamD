@@ -200,8 +200,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
-      key1: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      key0: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
+      key1: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -262,7 +262,7 @@ Transform:
   m_GameObject: {fileID: 1575435514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: -3.083}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2072110147195629000}
   m_RootOrder: 5
@@ -484,8 +484,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
-      key1: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      key0: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
+      key1: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -5529,6 +5529,7 @@ GameObject:
   - component: {fileID: 2072110147195629005}
   - component: {fileID: 2072110147195629007}
   - component: {fileID: 2072110147195629006}
+  - component: {fileID: 630625038}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5571,19 +5572,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1664711361}
-  hp: 100
-  maxhp: 100
+  _aboolopening: opening
+  _hp: 100
+  _maxhp: 100
   _speed: 1
-  minspeed: 1
-  maxspeed: 20
-  moneyObj: {fileID: 2884891307413626956, guid: a2c2f0225974ecd4ca19f082695e1bf7,
+  _minspeed: 1
+  _maxspeed: 10
+  _moneyObj: {fileID: 2884891307413626956, guid: a2c2f0225974ecd4ca19f082695e1bf7,
+    type: 3}
+  _smokeObj: {fileID: 8477133639815878808, guid: 48e26e70d10b20742810af0543ab1bc8,
     type: 3}
   _camera: {fileID: 0}
-  forwordSpeed: 10
-  rotateSpeed: 3
-  moveForceMultiplier: 5
-  hpbar: {fileID: 0}
-  moneyText: {fileID: 0}
+  _canvas: {fileID: 0}
+  _forwordSpeed: 7
+  _rotateSpeed: 5
+  _moveForceMultiplier: 1
+  _hpbar: {fileID: 0}
+  _moneyText: {fileID: 0}
 --- !u!65 &2072110147195629007
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5613,6 +5618,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &630625038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072110147195629004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f343779bc619943bee386575f88303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _UIs: []
 --- !u!1 &2072110147505292445
 GameObject:
   m_ObjectHideFlags: 0
