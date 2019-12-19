@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Point
   - Smoke
+  - Speech
+  - SpriteEffectMng
   layers:
   - Default
   - TransparentFX

@@ -43,7 +43,7 @@ public class EnemyCtl : MonoBehaviour
     private bool onceFlag = true;
 
     private float _displaySpeed = 0.1f;     // 表示速度
-    private float _disappearSpeed = 0.1f;   // 非表示速度
+    private float _disappearSpeed = 0.001f;   // 非表示速度
 
     private float _displayTimeSec = 1f;     // 表示時間
     private float _timeFlame;
@@ -52,7 +52,7 @@ public class EnemyCtl : MonoBehaviour
     private float _minScale = 0;
     private List<GameObject> _speechList;
     private bool _speechPopFlag;    
-    //private SpriteEffectMng _spriteEffectMng;
+    private SpriteEffectMng _spriteEffectMng;
 
     //タグ名
     private string money  = "Money";
@@ -72,7 +72,7 @@ public class EnemyCtl : MonoBehaviour
         _speechList = new List<GameObject>();
         _speechPopFlag = false;
         _timeFlame = 0;
-        //_spriteEffectMng = GameObject.FindGameObjectWithTag("SpriteEffectMng").GetComponent<SpriteEffectMng>();
+        _spriteEffectMng = GameObject.FindGameObjectWithTag("SpriteEffectMng").GetComponent<SpriteEffectMng>();
 
         for (int cnt = 0; cnt < this.transform.childCount; cnt++)
         {
@@ -115,8 +115,7 @@ public class EnemyCtl : MonoBehaviour
         {
             _navmesh.speed = 0;
             _navmesh.acceleration = 10;
-            _smokeScr = other.GetComponent<smoke>();
-            smokeTime = _smokeScr.GetCount();
+            smokeTime = 3;
             smokeFlag = true;
         }
 
@@ -162,11 +161,13 @@ public class EnemyCtl : MonoBehaviour
             //怒鳴り声のエフェクト
             if ((_displayTimeSec + _displaySpeed) > _timeFlame)
             {
-                //_spriteEffectMng.Expansion(_speechList[0].gameObject, _maxScale, _displaySpeed * 60);
+                _spriteEffectMng.Expansion(_speechList[0].gameObject, 0.016f, _displaySpeed * 60);
+                _spriteEffectMng.Expansion(_speechList[1].gameObject, 0.013f, _displaySpeed * 60);
             }
             else
             {
-                //_spriteEffectMng.Shrink(_speechList[0].gameObject, _minScale, _displaySpeed * 60);
+                _spriteEffectMng.Shrink(_speechList[0].gameObject, _minScale, _displaySpeed * 60);
+                _spriteEffectMng.Shrink(_speechList[1].gameObject, _minScale, _displaySpeed * 60);
                 if ((_displayTimeSec + _displaySpeed + _disappearSpeed) < _timeFlame)
                 {
                     _timeFlame = 0;

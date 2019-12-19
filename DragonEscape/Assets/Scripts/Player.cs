@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     //オープニングアニメーターのトリガー
     [SerializeField]
     private string _aboolopening = "opening";
+    private GameObject _stopSprite;
+    private GameObject _speechbubble;
+    private SpriteEffectMng _spriteEffectMng;
 
     //ステータス
     [SerializeField]
@@ -94,6 +97,22 @@ public class Player : MonoBehaviour
         {
             _canvasAnimator = _canvas.GetComponent<Animator>();
         }
+
+        //Playerの子オブジェクト内で該当オブジェクトを取得
+        for(int j = 0; j < transform.childCount; j++)
+        {
+            if(transform.GetChild(j).name == "speech bubble")
+            {
+                _speechbubble = transform.GetChild(j).gameObject;
+            }
+            if (transform.GetChild(j).name == "STOP")
+            {
+                _stopSprite = transform.GetChild(j).gameObject;
+            }
+        }
+        _speechbubble.SetActive(false);
+        _stopSprite.SetActive(false);
+        _spriteEffectMng = GameObject.FindGameObjectWithTag("SpriteEffectMng").GetComponent<SpriteEffectMng>();
     }
 
     // Update is called once per frame
@@ -133,6 +152,8 @@ public class Player : MonoBehaviour
 
 
     }
+
+    //オープニング
     void OpeningAnime()
     {
         _cameraAnimator.SetBool(_aboolopening, true);
@@ -142,6 +163,15 @@ public class Player : MonoBehaviour
             _animator.SetBool(_aboolopening, true);
             _animePlaying = true;
         }
+        for (int j = 0; j < 10; j++)
+        {
+            if (Input.GetKeyDown("joystick button " + j))
+            {
+                _animator.SetBool(_aboolopening, true);
+                _animePlaying = true;
+                break;
+            }
+        }
 
         if (_animePlaying)
         {
@@ -149,20 +179,37 @@ public class Player : MonoBehaviour
             _canvasAnimator.SetBool(_aboolopening, false);
         }
 
+        if (_animePlaying && _animecount >= 1.0f)
+        {
+            //STOP吹き出しを出す
+            _speechbubble.SetActive(true);
+            _stopSprite.SetActive(true);
+            _spriteEffectMng.Expansion(_speechbubble, 0.05f, 0.02f * 120);
+            _spriteEffectMng.Expansion(_stopSprite, 0.07f, 0.015f * 120);
+        }
         if (_animePlaying && _animecount <= 2.0f)
         {
             _animecount += 1 * Time.deltaTime;
         }
         else if (_animePlaying && _animecount >= 2.0f)
         {
-
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
+            Invoke("StopSpeechOff", 2);
+            _stopSprite.transform.parent = null;
+            _speechbubble.transform.parent = null;
             _cameraAnimator.enabled = false;
             _animePlaying = false;
             _animecount = 0;
         }
     }
+
+    void StopSpeechOff()
+    {
+        _speechbubble.SetActive(false);
+        _stopSprite.SetActive(false);
+    }
+
     //ＵＩ更新
     void UIUpdate()
     {
