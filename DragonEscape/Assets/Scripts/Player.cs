@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private float _minspeed = 1.0f;
     [SerializeField]
     private float _maxspeed = 3.0f;
-    private int _money = 10000000;
+    private int _money = 100;
 
     [SerializeField]
     private GameObject _moneyObj;
@@ -67,6 +67,10 @@ public class Player : MonoBehaviour
     private Image _hpbar;
     [SerializeField]
     private Text _moneyText;
+    [SerializeField]
+    private Image[] _moneyUIs;
+    [SerializeField]
+    private Sprite[] _moneySprites;
 
     
 
@@ -159,6 +163,8 @@ public class Player : MonoBehaviour
             _gm.SetGameMode(1);
             _animator.SetBool(_aboolopening, false);
             _cameraAnimator.enabled = false;
+            UIUpdate();
+            MoneyCheck(_moneyUIs, _money);
             _animePlaying = false;
             _animecount = 0;
         }
@@ -223,16 +229,18 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("money"))
         {
             Instantiate(_moneyObj, transform.position, Quaternion.identity);
-            _money -= 10000;
+            _money -= 1;
             //UI変更処理
             UIUpdate();
+            MoneyCheck(_moneyUIs,_money);
         }
         if (Input.GetButtonDown("smoke"))
         {
             Instantiate(_smokeObj, transform.position, Quaternion.identity);
-            _money -= 10000;
+            _money -= 1;
             //UI変更処理
             UIUpdate();
+            MoneyCheck(_moneyUIs, _money);
         }
     }
 
@@ -253,6 +261,23 @@ public class Player : MonoBehaviour
                 _gm.GameOver();
             }
         }
+    }
+
+    private void MoneyCheck(Image[] nums,int money)
+    {
+        int one = 0;
+        int m = money;
+        foreach (Image numI in nums)
+        {
+            one = m % 10;
+            m /= 10;
+            numI.sprite = _moneySprites[one];
+
+        }
+
+
+
+
     }
 
 
