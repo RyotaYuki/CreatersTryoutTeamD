@@ -92,6 +92,11 @@ public class Player : PlayeAlphatype
     [SerializeField]private AudioClip breaking;
     [SerializeField] private AudioClip drift;
 
+    [Space]
+    [SerializeField]
+    private GameObject _powEffect;
+    [SerializeField] private GameObject _donEffect;
+
     private void Awake()
     {
         accelAction += () => { source.PlayOneShot(engine); };
@@ -233,6 +238,7 @@ public class Player : PlayeAlphatype
         else if (_animePlaying && _animecount >= 2.0f)
         {
             _gm.SetGameMode(1);
+            _powEffect.SetActive(false);
             _animator.SetBool(_aboolopening, false);
             MoneyCheck(_moneyUIs, _money);
             Invoke("StopSpeechOff", 2);
@@ -377,11 +383,11 @@ public class Player : PlayeAlphatype
         {
             if (_speed >= 10)
             {
-                _hp -= 10;
+                _hp -= 2;
                 _speed = 9;
                 //UI変更処理
                 UIUpdate();
-                
+                Instantiate(_donEffect, transform.position, transform.rotation);
             }
             if(_hp <= 0)
             {

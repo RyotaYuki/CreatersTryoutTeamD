@@ -10,6 +10,7 @@ TagManager:
   - Smoke
   - Speech
   - SpriteEffectMng
+  - Enemy
   layers:
   - Default
   - TransparentFX
