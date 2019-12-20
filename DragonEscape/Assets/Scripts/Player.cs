@@ -94,9 +94,30 @@ public class Player : PlayeAlphatype
 
     private void Awake()
     {
-        accelAction += () => { source.PlayOneShot(engine); };
-        brakeAction += () => { source.PlayOneShot(breaking); };
-        driftAction += () => { source.PlayOneShot(drift); };
+        accelAction += () =>
+        {
+            source.clip = engine;
+            if (source.isPlaying == false)
+            {
+                source.Play();
+            }
+        };
+        brakeAction += () =>
+        {
+            source.clip = breaking;
+            if (source.isPlaying == false)
+            {
+                source.Play();
+            }
+        };
+        driftAction += () =>
+        {
+            source.clip = drift;
+            if (source.isPlaying == false)
+            {
+                source.Play();
+            }
+        };
 
     }
 
@@ -167,14 +188,14 @@ public class Player : PlayeAlphatype
 
         if (gamemode == 1)
         {
-            //移動処理
-            KeybordInput();
-            ControllerInput();
-            //スピード調整
-            SpeedControl();
+            ////移動処理
+            //KeybordInput();
+            //ControllerInput();
+            ////スピード調整
+            //SpeedControl();
 
-            //PlayerUpdate();
-            //transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
+            PlayerUpdate();
+            transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
             ItemThrow();
 
         }

@@ -38,6 +38,8 @@ public class PlayeAlphatype : MonoBehaviour
     [SerializeField] protected float rotationSpeed;
     [Space]
 
+    private bool isOne;
+
     protected Action accelAction;
     protected Action brakeAction;
     protected Action driftAction;
@@ -320,26 +322,30 @@ public class PlayeAlphatype : MonoBehaviour
 
     private void moveDirUpdate()
     {
-        nowMoveDir = transform.forward;
-        moveDir = transform.forward;
+        nowMoveDir = this.transform.forward;
+        moveDir = this.transform.forward;
         nowRotationSpeed = rotationSpeed;
     }
 
     protected void PlayerUpdate()
     {
-
-        inputAxis.x = Input.GetAxis("Horizontal") * 100 * Time.deltaTime;
-        inputAxis.y = Input.GetAxis("Vertical") * 100 * Time.deltaTime;
+        inputAxis.x = Input.GetAxis("Horizontal") * Time.deltaTime;
+        inputAxis.y = Input.GetAxis("Vertical") * Time.deltaTime;
         float x = Input.GetAxis("RTrigger") * 100 * Time.deltaTime;
         float y = Input.GetAxis("LTrigger") * 100 * Time.deltaTime;
-        var acceleIn = x != 0;
-        var brakeIn = y != 0;
+        //Debug.Log(x);
+        Debug.Log(y);
+        var acceleIn = x >= 0.5f;
+        var brakeIn = y >= 0.5f;
 
         if (acceleIn && brakeIn)
         {
             //rotationCar_Drift();
             rotationCar_Normal();
-            drift();
+            if (nowGear >= 3)
+            {
+                drift();
+            }
         }
         else if (acceleIn)
         {
@@ -359,5 +365,6 @@ public class PlayeAlphatype : MonoBehaviour
             rotationCar_Normal();
             deceleration();
         }
+        transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
     }
 }

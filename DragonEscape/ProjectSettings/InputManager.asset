@@ -339,5 +339,5 @@ InputManager:
     snap: 1
     invert: 0
     type: 2
-    axis: 10
+    axis: 8
     joyNum: 0
