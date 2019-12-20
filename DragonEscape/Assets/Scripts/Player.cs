@@ -20,6 +20,9 @@ public class Player : PlayeAlphatype
     private GameObject _stopSprite;
     private GameObject _speechbubble;
     private SpriteEffectMng _spriteEffectMng;
+    private bool colFlag = false;
+    private GameObject _banSprite;
+    private GameObject _speechbubble2;
 
     //ステータス
     [SerializeField]
@@ -52,8 +55,9 @@ public class Player : PlayeAlphatype
     [SerializeField]
     private GameObject _canvas;//キャンバス
     private Animator _canvasAnimator;
+    private CameraShake shake;
 
-    
+
     //速度処理用
     private Vector3 _force;
     [SerializeField]
@@ -91,6 +95,11 @@ public class Player : PlayeAlphatype
     [SerializeField]private AudioClip engine;
     [SerializeField]private AudioClip breaking;
     [SerializeField] private AudioClip drift;
+
+    [Space]
+    [SerializeField]
+    private GameObject _powEffect;
+    [SerializeField] private GameObject _donEffect;
 
     private void Awake()
     {
@@ -157,10 +166,21 @@ public class Player : PlayeAlphatype
             {
                 _stopSprite = transform.GetChild(j).gameObject;
             }
+            if (transform.GetChild(j).name == "speech bubble2")
+            {
+                _speechbubble2 = transform.GetChild(j).gameObject;
+            }
+            if (transform.GetChild(j).name == "ban")
+            {
+                _banSprite = transform.GetChild(j).gameObject;
+            }
         }
         _speechbubble.SetActive(false);
         _stopSprite.SetActive(false);
+        _speechbubble2.SetActive(false);
+        _banSprite.SetActive(false);
         _spriteEffectMng = GameObject.FindGameObjectWithTag("SpriteEffectMng").GetComponent<SpriteEffectMng>();
+        shake = _camera.GetComponent<CameraShake>();
     }
 
     // Update is called once per frame
@@ -254,6 +274,7 @@ public class Player : PlayeAlphatype
         else if (_animePlaying && _animecount >= 2.0f)
         {
             _gm.SetGameMode(1);
+            _powEffect.SetActive(false);
             _animator.SetBool(_aboolopening, false);
             MoneyCheck(_moneyUIs, _money);
             Invoke("StopSpeechOff", 2);
@@ -396,21 +417,35 @@ public class Player : PlayeAlphatype
     {
         if(collision.gameObject.tag == "Wall")
         {
+            if (!colFlag)
+            {
+                _speechbubble2.SetActive(true);
+                _banSprite.SetActive(true);
+                shake.Shake(0.1f, 0.5f);
+            }
             if (_speed >= 10)
             {
-                _hp -= 10;
+                _hp -= 2;
                 _speed = 9;
                 //UI変更処理
                 UIUpdate();
-                
+                Instantiate(_donEffect, transform.position, transform.rotation);
             }
             if(_hp <= 0)
             {
                 _gm.GameOver();
             }
+            colFlag = true;
         }
     }
 
-
-
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Wall")
+        {
+            _speechbubble2.SetActive(false);
+            _banSprite.SetActive(false);
+            colFlag = false;
+        }
+    }
 }
