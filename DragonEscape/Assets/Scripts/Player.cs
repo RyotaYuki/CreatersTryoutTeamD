@@ -268,6 +268,7 @@ public class Player : MonoBehaviour
             //_moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
 
 
+            _force = transform.up * moveY * _forwordSpeed;
             //
             _rb.AddForce(_force);
             _movevector = _force;
@@ -290,13 +291,14 @@ public class Player : MonoBehaviour
             var moveDir = new Vector3(moveX, 0, moveY);
             var axis = Vector3.Cross(transform.up, moveDir);
             var angle = Vector3.Angle(transform.up, moveDir) * (axis.y < 0 ? -1 : 1);
-            _force = transform.up * moveY * _forwordSpeed;
+            //
             Debug.Log(axis);
             Debug.Log(angle);
+            //float n = axis * angle;
 
-            if (angle >= 1) {
-                transform.Rotate(0, 0, 1);
-            }
+            //if (n >= 1) {
+            //    transform.Rotate(0, 0, 1);
+            //}
         }
     }
 

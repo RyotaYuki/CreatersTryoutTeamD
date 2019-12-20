@@ -20,6 +20,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (_generateMode)
         {
+
             int r = Random.Range(0, 3);
             foreach (GameObject mPatern in _mapPaterns)
             {
