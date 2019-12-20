@@ -101,6 +101,10 @@ public class Player : PlayeAlphatype
     private GameObject _powEffect;
     [SerializeField] private GameObject _donEffect;
 
+    [SerializeField]
+    private int _nolma = 70;
+    private int _score = 0;
+
     private void Awake()
     {
         accelAction += () =>
@@ -209,13 +213,13 @@ public class Player : PlayeAlphatype
         if (gamemode == 1)
         {
             ////移動処理
-            //KeybordInput();
-            //ControllerInput();
+            KeybordInput();
+            ControllerInput();
             ////スピード調整
-            //SpeedControl();
+            SpeedControl();
 
-            PlayerUpdate();
-            transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
+            //PlayerUpdate();
+            //transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
             ItemThrow();
 
         }
@@ -223,9 +227,10 @@ public class Player : PlayeAlphatype
 
         if (gamemode == 2)
         {
-            MoneyCheck(_goalUIs, _money);
+            _score = _money - _nolma;
+            MoneyCheck(_goalUIs, _nolma);
             MoneyCheck(_havemoneyUIs, _money);
-            MoneyCheck(_yourpointUIs, _money);
+            MoneyCheck(_yourpointUIs, _score);
             if (Input.GetButtonDown("money"))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
