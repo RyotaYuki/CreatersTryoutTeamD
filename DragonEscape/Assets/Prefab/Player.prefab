@@ -391,7 +391,7 @@ SpriteRenderer:
   m_Size: {x: 3.92, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1984333399
@@ -5591,6 +5591,11 @@ MonoBehaviour:
   _moveForceMultiplier: 1
   _hpbar: {fileID: 0}
   _moneyText: {fileID: 0}
+  _moneyUIs: []
+  _moneySprites: []
+  _goalUIs: []
+  _havemoneyUIs: []
+  _yourpointUIs: []
 --- !u!65 &2072110147195629007
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10398,7 +10403,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 39
   m_Sprite: {fileID: 21300000, guid: 2baf0f795bdf3264ba4f0ed3a6dd1ff9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10477,7 +10482,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 40
   m_Sprite: {fileID: 21300000, guid: 16e1e67b79542f64dad469c55490fbd8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
