@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : PlayeAlphatype
 {
     //ゲームマネージャー
     private GameManager _gm;
@@ -86,6 +86,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Image[] _yourpointUIs;
 
+    [Space]
+    [SerializeField]private AudioSource source;
+    [SerializeField]private AudioClip engine;
+    [SerializeField]private AudioClip breaking;
+    [SerializeField] private AudioClip drift;
+
+    private void Awake()
+    {
+        accelAction += () => { source.PlayOneShot(engine); };
+        brakeAction += () => { source.PlayOneShot(breaking); };
+        driftAction += () => { source.PlayOneShot(drift); };
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -154,14 +167,16 @@ public class Player : MonoBehaviour
 
         if (gamemode == 1)
         {
-
             //移動処理
             KeybordInput();
             ControllerInput();
             //スピード調整
             SpeedControl();
 
+            //PlayerUpdate();
+            //transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
             ItemThrow();
+
         }
 
 
