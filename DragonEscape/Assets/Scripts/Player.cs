@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
     //移動受付用
     private float _moveX;
     private float _moveY;
+    [SerializeField]
+    private int inputmode = 0;//1が簡単操作
 
     //カメラ操作用
     [SerializeField]
@@ -243,7 +245,8 @@ public class Player : MonoBehaviour
 
     //入力受け取り
     void ControllerInput() {
-        float moveX = Input.GetAxis("Horizontal");
+        //float moveX = Input.GetAxis("Horizontal");
+        float moveX = 0;
         float moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
         Move(moveX, moveY);
     }
@@ -258,27 +261,44 @@ public class Player : MonoBehaviour
 
     void Move(float moveX,float moveY)
     {
-        //移動入力受け取り
-        //_moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
-        //_moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
-
-        _force = transform.up * moveY * _forwordSpeed;
-        //
-        _rb.AddForce(_force);
-        _movevector = _force;
-        //
-        float Z_Rotation = moveX * _rotateSpeed * _speed * Time.deltaTime;
-        Vector3 rotatePoint = transform.position - (transform.up * (_speed / 5));
-        transform.RotateAround(rotatePoint,new Vector3(0,1,0),Z_Rotation);
-        //慣性制限
-        _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x,0,_movevector.z) - _rb.velocity));
-        //指定キー入れてるときより慣性を制限するように
-        if (Input.GetButton("shift"))
+        if (inputmode == 0)
         {
-            _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
-            //transform.Rotate(0, 0, -Z_Rotation);
-            transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
+            //移動入力受け取り
+            //_moveY = Input.GetAxis("RTrigger") * _forwordSpeed * _speed * Time.deltaTime;
+            //_moveY = Input.GetAxis("Vertical") * _forwordSpeed * _speed * Time.deltaTime;
 
+
+            _force = transform.up * moveY * _forwordSpeed;
+            //
+            _rb.AddForce(_force);
+            _movevector = _force;
+            //
+            float Z_Rotation = moveX * _rotateSpeed * _speed * Time.deltaTime;
+            Vector3 rotatePoint = transform.position - (transform.up * (_speed / 5));
+            transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
+            //慣性制限
+            _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+            //指定キー入れてるときより慣性を制限するように
+            if (Input.GetButton("shift"))
+            {
+                _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+                //transform.Rotate(0, 0, -Z_Rotation);
+                transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
+
+            }
+        }else if(inputmode == 1)
+        {
+            var moveDir = new Vector3(moveX, 0, moveY);
+            var axis = Vector3.Cross(transform.up, moveDir);
+            var angle = Vector3.Angle(transform.up, moveDir) * (axis.y < 0 ? -1 : 1);
+            //
+            Debug.Log(axis);
+            Debug.Log(angle);
+            //float n = axis * angle;
+
+            //if (n >= 1) {
+            //    transform.Rotate(0, 0, 1);
+            //}
         }
     }
 
