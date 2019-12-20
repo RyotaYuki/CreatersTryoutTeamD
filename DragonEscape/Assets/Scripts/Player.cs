@@ -109,10 +109,9 @@ public class Player : PlayeAlphatype
     {
         accelAction += () =>
         {
-            source.clip = engine;
-            if (source.isPlaying == false)
+            if (source.enabled==false)
             {
-                source.Play();
+                source.enabled = true;
             }
         };
         brakeAction += () =>
@@ -120,7 +119,7 @@ public class Player : PlayeAlphatype
             source.clip = breaking;
             if (source.isPlaying == false)
             {
-                source.Play();
+                source.PlayOneShot(breaking);
             }
         };
         driftAction += () =>
@@ -128,7 +127,7 @@ public class Player : PlayeAlphatype
             source.clip = drift;
             if (source.isPlaying == false)
             {
-                source.Play();
+                source.PlayOneShot(drift);
             }
         };
 
@@ -212,10 +211,10 @@ public class Player : PlayeAlphatype
 
         if (gamemode == 1)
         {
-            ////移動処理
+            //移動処理
             KeybordInput();
             ControllerInput();
-            ////スピード調整
+            //スピード調整
             SpeedControl();
 
             //PlayerUpdate();
@@ -340,6 +339,10 @@ public class Player : PlayeAlphatype
             transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
             //慣性制限
             _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+            if (Input.GetAxis("RTrigger")==0)
+            {
+                source.enabled = false;
+            }
             //指定キー入れてるときより慣性を制限するように
             if (Input.GetButton("shift"))
             {
@@ -420,7 +423,7 @@ public class Player : PlayeAlphatype
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Wall")
+        if(collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Enemy")
         {
             if (!colFlag)
             {
@@ -447,6 +450,41 @@ public class Player : PlayeAlphatype
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Wall")
+        {
+            _speechbubble2.SetActive(false);
+            _banSprite.SetActive(false);
+            colFlag = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            if (!colFlag)
+            {
+                _speechbubble2.SetActive(true);
+                _banSprite.SetActive(true);
+                shake.Shake(0.1f, 0.5f);
+            }
+            if (_speed >= 10)
+            {
+                _hp -= 2;
+                _speed = 9;
+                //UI変更処理
+                UIUpdate();
+                Instantiate(_donEffect, transform.position, transform.rotation);
+            }
+            if (_hp <= 0)
+            {
+                _gm.GameOver();
+            }
+            colFlag = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Wall")
         {
             _speechbubble2.SetActive(false);
             _banSprite.SetActive(false);
