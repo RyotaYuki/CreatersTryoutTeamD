@@ -16,6 +16,10 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private GameObject[] _mapPaterns;
 
+    //キャンバスアニメーター
+    [SerializeField]
+    private Animator _canvasAnimator;
+
     private void Start()
     {
         if (_generateMode)
@@ -27,6 +31,26 @@ public class GameManager : MonoSingleton<GameManager>
                 mPatern.SetActive(false);
             }
             _mapPaterns[r].SetActive(true);
+        }
+    }
+
+    private void Update()
+    {
+        if(_gamemode == 3)
+        {
+            if (Input.GetButtonDown("smoke"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            for (int j = 0; j < 10; j++)
+            {
+                if (Input.GetKeyDown("joystick button " + j))
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    break;
+                }
+            }
+
         }
     }
 
@@ -48,7 +72,8 @@ public class GameManager : MonoSingleton<GameManager>
     }
     public void GameOver()
     {
-        _gamemode = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        _gamemode = 3;
+        _canvasAnimator.SetBool("gameover", true);
+
     }
 }
