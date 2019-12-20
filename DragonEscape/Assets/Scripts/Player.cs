@@ -105,10 +105,9 @@ public class Player : PlayeAlphatype
     {
         accelAction += () =>
         {
-            source.clip = engine;
-            if (source.isPlaying == false)
+            if (source.enabled==false)
             {
-                source.Play();
+                source.enabled = true;
             }
         };
         brakeAction += () =>
@@ -116,7 +115,7 @@ public class Player : PlayeAlphatype
             source.clip = breaking;
             if (source.isPlaying == false)
             {
-                source.Play();
+                source.PlayOneShot(breaking);
             }
         };
         driftAction += () =>
@@ -124,7 +123,7 @@ public class Player : PlayeAlphatype
             source.clip = drift;
             if (source.isPlaying == false)
             {
-                source.Play();
+                source.PlayOneShot(drift);
             }
         };
 
@@ -208,14 +207,14 @@ public class Player : PlayeAlphatype
 
         if (gamemode == 1)
         {
-            ////移動処理
-            //KeybordInput();
-            //ControllerInput();
-            ////スピード調整
-            //SpeedControl();
+            //移動処理
+            KeybordInput();
+            ControllerInput();
+            //スピード調整
+            SpeedControl();
 
-            PlayerUpdate();
-            transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
+            //PlayerUpdate();
+            //transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
             ItemThrow();
 
         }
@@ -335,6 +334,10 @@ public class Player : PlayeAlphatype
             transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
             //慣性制限
             _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+            if (Input.GetAxis("RTrigger")==0)
+            {
+                source.enabled = false;
+            }
             //指定キー入れてるときより慣性を制限するように
             if (Input.GetButton("shift"))
             {
