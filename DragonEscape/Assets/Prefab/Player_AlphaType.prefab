@@ -118,28 +118,29 @@ MonoBehaviour:
   nowRotationSpeed: 0
   moveDir: {x: 0, y: 0, z: 0}
   nowMoveDir: {x: 0, y: 0, z: 0}
+  inDriftDirection: 0
   gearChangeCount: 0
   minGear: 0
-  maxGear: 4
+  maxGear: 6
   parameter:
   - minSpeed: 0
-    maxSpeed: 9
+    maxSpeed: 11
     minTorque: 5
     maxTorque: 15
   - minSpeed: 9
     maxSpeed: 18
     minTorque: 13
     maxTorque: 16
-  - minSpeed: 18
-    maxSpeed: 31
+  - minSpeed: 16
+    maxSpeed: 23
     minTorque: 14
     maxTorque: 17
-  - minSpeed: 31
-    maxSpeed: 48
+  - minSpeed: 21
+    maxSpeed: 31
     minTorque: 15
     maxTorque: 19
-  - minSpeed: 48
-    maxSpeed: 57
+  - minSpeed: 28
+    maxSpeed: 37
     minTorque: 17
     maxTorque: 20
   decelerationPower: 20
