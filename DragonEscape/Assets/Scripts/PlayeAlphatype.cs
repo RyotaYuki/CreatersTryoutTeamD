@@ -15,28 +15,30 @@ public class PlayeAlphatype : MonoBehaviour
     }
 
     [Header("Parameter")]
-    [SerializeField] private GameObject rotationAxisCenter;
+    [SerializeField] protected GameObject rotationAxisCenter;
     [Space]
-    [SerializeField] private float nowSpeed;
-    [SerializeField] private float nowTorque;
-    [SerializeField] private int nowGear;
-    [SerializeField] private float nowRotationSpeed;
-    [SerializeField] private Vector3 moveDir;
-    [SerializeField] private Vector3 nowMoveDir;
-    [SerializeField] private int inDriftDirection;
-    [SerializeField] private float gearChangeCount;
+    [SerializeField] protected float nowSpeed;
+    [SerializeField] protected float nowTorque;
+    [SerializeField] protected int nowGear;
+    [SerializeField] protected float nowRotationSpeed;
+    [SerializeField] protected Vector3 moveDir;
+    [SerializeField] protected Vector3 nowMoveDir;
+    [SerializeField] protected int inDriftDirection;
+    [SerializeField] protected float gearChangeCount;
     [Space,Header("Parameter")]
-    [SerializeField] private int minGear;
-    [SerializeField] private int maxGear;
+    [SerializeField] protected int minGear;
+    [SerializeField] protected int maxGear;
     [SerializeField] gearParameter[] parameter;
     [Space]
-    [SerializeField] private float decelerationPower;
-    [SerializeField] private float suppressionPower;
-    [SerializeField] private float driftPower;
+    [SerializeField] protected float decelerationPower;
+    [SerializeField] protected float suppressionPower;
+    [SerializeField] protected float driftPower;
     [Space]
-    [SerializeField] private float gearChangeTime;
-    [SerializeField] private float rotationSpeed;
-    
+    [SerializeField] protected float gearChangeTime;
+    [SerializeField] protected float rotationSpeed;
+    [Space]
+
+    protected Action accelAction;
     protected Action brakeAction;
     protected Action driftAction;
 
@@ -49,22 +51,26 @@ public class PlayeAlphatype : MonoBehaviour
 
     private void Update()
     {
-         inputAxis.x= Input.GetAxis("Horizontal");
-         inputAxis.y= Input.GetAxis("Vertical");
+        inputAxis.x = Input.GetAxis("Horizontal") * 100 * Time.deltaTime;
+        inputAxis.y = Input.GetAxis("Vertical") * 100 * Time.deltaTime;
+        float x = Input.GetAxis("RTrigger") * 100 * Time.deltaTime;
+        float y = Input.GetAxis("LTrigger") * 100 * Time.deltaTime;
+        var acceleIn = x != 0;
+        var brakeIn = y != 0;
 
-        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space))
+        if (acceleIn && brakeIn)
         {
             //rotationCar_Drift();
             rotationCar_Normal();
             drift();
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (acceleIn)
         {
             moveDirUpdate();
             rotationCar_Normal();
             acceleration();
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else if (brakeIn)
         {
             moveDirUpdate();
             rotationCar_Normal();
@@ -120,6 +126,7 @@ public class PlayeAlphatype : MonoBehaviour
             transform.Rotate(new Vector3(0, inDriftDirection*nowRotationSpeed, 0));
             //rot.y += inDriftDirection * Time.deltaTime * nowRotationSpeed;
             //transform.localRotation = rot;
+            driftAction();
         }
         else
         {
@@ -166,6 +173,7 @@ public class PlayeAlphatype : MonoBehaviour
         {
             gearChangeCount = 0;
         }
+        accelAction();
     }
 
     /// <summary>
@@ -248,6 +256,7 @@ public class PlayeAlphatype : MonoBehaviour
                 gearChange_Down();
             }
         }
+        brakeAction();
     }
 
     /// <summary>
@@ -318,22 +327,27 @@ public class PlayeAlphatype : MonoBehaviour
 
     protected void PlayerUpdate()
     {
-        inputAxis.x = Input.GetAxis("Horizontal");
-        inputAxis.y = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Space))
+        inputAxis.x = Input.GetAxis("Horizontal") * 100 * Time.deltaTime;
+        inputAxis.y = Input.GetAxis("Vertical") * 100 * Time.deltaTime;
+        float x = Input.GetAxis("RTrigger") * 100 * Time.deltaTime;
+        float y = Input.GetAxis("LTrigger") * 100 * Time.deltaTime;
+        var acceleIn = x != 0;
+        var brakeIn = y != 0;
+
+        if (acceleIn && brakeIn)
         {
             //rotationCar_Drift();
             rotationCar_Normal();
             drift();
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (acceleIn)
         {
             moveDirUpdate();
             rotationCar_Normal();
             acceleration();
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else if (brakeIn)
         {
             moveDirUpdate();
             rotationCar_Normal();
@@ -345,6 +359,5 @@ public class PlayeAlphatype : MonoBehaviour
             rotationCar_Normal();
             deceleration();
         }
-        transform.position += nowMoveDir.normalized * nowSpeed * Time.deltaTime;
     }
 }
