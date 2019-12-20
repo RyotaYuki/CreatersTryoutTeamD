@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -20,6 +21,11 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private Animator _canvasAnimator;
 
+    [SerializeField]
+    private Image _goalpicture;
+    [SerializeField]
+    private Sprite[] _goalpicturelist;
+
     private void Start()
     {
         if (_generateMode)
@@ -31,6 +37,7 @@ public class GameManager : MonoSingleton<GameManager>
                 mPatern.SetActive(false);
             }
             _mapPaterns[r].SetActive(true);
+            _goalpicture.sprite = _goalpicturelist[r];
         }
     }
 
