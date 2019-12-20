@@ -103,10 +103,22 @@ public class Player : PlayeAlphatype
 
     private void Awake()
     {
-        accelAction += () => { source.PlayOneShot(engine); };
-        brakeAction += () => { source.PlayOneShot(breaking); };
-        driftAction += () => { source.PlayOneShot(drift); };
-
+        accelAction += () =>
+        {
+            source.clip = engine;
+            if (source.isPlaying == false)
+            {
+                source.Play();
+            }
+        };
+        brakeAction += () =>
+        {
+            source.clip = breaking;
+            if (source.isPlaying == false)
+            {
+                source.Play();
+            }
+        };
     }
 
     // Start is called before the first frame update
@@ -314,9 +326,14 @@ public class Player : PlayeAlphatype
             transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
             //慣性制限
             _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
+            if (_rb.velocity.sqrMagnitude != 0)
+            {
+                accelAction();
+            }
             //指定キー入れてるときより慣性を制限するように
             if (Input.GetButton("shift"))
             {
+                brakeAction();
                 _rb.AddForce(_moveForceMultiplier * (new Vector3(_movevector.x, 0, _movevector.z) - _rb.velocity));
                 //transform.Rotate(0, 0, -Z_Rotation);
                 transform.RotateAround(rotatePoint, new Vector3(0, 1, 0), Z_Rotation);
